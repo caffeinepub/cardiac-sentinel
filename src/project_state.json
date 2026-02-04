@@ -1,0 +1,126 @@
+{
+  "schemaVersion": "1.0.0",
+  "projectStateVersion": 4,
+  "summary": "Design/spec for the \"Cardiac Sentinel\" wearable watch plus a companion app or website to support the device’s emergency alerting workflow and user interaction.",
+  "existing_features": [
+    {
+      "id": "feature-create-a-cardiac-sentinel-companion-web-app-with-two-primary-experiences-1-a-patient-experience-to-view-heart-monitoring-status-and-trigger-sos-and-2-a-medical-control-room-experience-to-receive-and-manage-emergency-alerts",
+      "title": "Create a Cardiac Sentinel companion web app with two primary experiences: (1) a patient experience to view heart monitoring status and trigger SOS, and (2) a medical control room experience to receive and manage emergency alerts.",
+      "reqIds": [
+        "REQ-1"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-internet-identity-sign-in-and-associate-an-authenticated-principal-with-a-user-profile-that-can-be-created-updated-in-the-app-name-age-known-condition-notes-emergency-contacts-home-address-free-text-location",
+      "title": "Implement Internet Identity sign-in and associate an authenticated principal with a user profile that can be created/updated in the app (name, age, known condition notes, emergency contacts, home address/free-text location).",
+      "reqIds": [
+        "REQ-2"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-patient-dashboard-show-current-monitoring-status-recent-readings-list-and-a-manual-sos-button-that-creates-a-new-emergency-alert-immediately",
+      "title": "Patient dashboard: show current monitoring status, recent readings list, and a manual SOS button that creates a new emergency alert immediately.",
+      "reqIds": [
+        "REQ-4"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-simulate-watch-sensor-monitoring-in-the-web-app-provide-a-ui-control-to-generate-periodic-heart-rate-readings-and-automatically-create-an-emergency-alert-when-readings-cross-a-configurable-abnormal-threshold",
+      "title": "Simulate watch sensor monitoring in the web app: provide a UI control to generate periodic heart-rate readings and automatically create an emergency alert when readings cross a configurable abnormal threshold.",
+      "reqIds": [
+        "REQ-5"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-medical-control-room-dashboard-display-a-real-time-refreshed-polling-queue-of-incoming-alerts-allow-viewing-alert-details-patient-profile-summary-reading-context-and-allow-updating-alert-status-new-acknowledged-dispatched-resolved",
+      "title": "Medical control room dashboard: display a real-time refreshed (polling) queue of incoming alerts, allow viewing alert details (patient profile summary + reading context), and allow updating alert status (New, Acknowledged, Dispatched, Resolved).",
+      "reqIds": [
+        "REQ-6"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-lightweight-access-control-mechanism-for-the-medical-control-room-section-e-g-an-allowlist-of-principals-stored-in-the-backend-so-only-authorized-users-can-access-the-control-room-apis-and-ui",
+      "title": "Add a lightweight access control mechanism for the Medical Control Room section (e.g., an allowlist of principals stored in the backend) so only authorized users can access the control room APIs and UI.",
+      "reqIds": [
+        "REQ-7"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-apply-a-coherent-distinctive-visual-theme-for-cardiac-sentinel-across-the-app-colors-typography-spacing-and-components-suitable-for-a-medical-safety-product-avoid-blue-purple-as-primary-brand-colors",
+      "title": "Apply a coherent, distinctive visual theme for Cardiac Sentinel across the app (colors, typography, spacing, and components) suitable for a medical safety product; avoid blue/purple as primary brand colors.",
+      "reqIds": [
+        "REQ-8"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-generated-static-brand-illustration-images-and-render-them-in-the-ui-store-in-frontend-public-assets-generated",
+      "title": "Add generated static brand/illustration images and render them in the UI (store in frontend/public/assets/generated).",
+      "reqIds": [
+        "REQ-9"
+      ],
+      "version": 1
+    }
+  ],
+  "new_feature_requests": [
+    {
+      "id": "AR-1",
+      "summary": "Cardiac Sentinel watch: monitor heart functions via sensors and automatically send emergency alerts (text) to medical control room and nearest hospital/health center when abnormality/heart attack detected, with optional SOS manual activation",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-2",
+      "summary": "Create a companion app or website for the Cardiac Sentinel device",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-5",
+      "summary": "Add backend data models and APIs to store: user profiles, simulated device readings (heart rate + timestamp + status), and emergency alerts (type: automatic/manual SOS, severity, status, timestamps).",
+      "reqIds": [
+        "REQ-3"
+      ],
+      "status": "pending"
+    }
+  ],
+  "architectural_notes": [
+    "Wearable watch form factor with integrated heart-function sensor monitoring.",
+    "Emergency workflow: abnormal detection or heart attack triggers immediate text-message alert routed first to medical control room, then forwarded to nearest hospital/primary health center.",
+    "Support both spontaneous (automatic) activation and manual SOS activation by patient.",
+    "Companion software component requested: build an app or a website to support the Cardiac Sentinel watch."
+  ],
+  "known_issues": [],
+  "isFixRequest": false,
+  "imageRequirements": "## Required Images\n- Cardiac Sentinel wordmark logo with a subtle heart + shield motif, flat vector style (cardiac-sentinel-logo.dim_512x512.png)\n- Smartwatch product illustration showing a watch face with heart-rate line and SOS indicator, clean minimal style (watch-illustration.dim_1200x800.png)\n- Small set of three UI icons: heart, shield, SOS button, consistent stroke style (ui-icons-set.dim_512x512.png)",
+  "generatedImages": [
+    {
+      "filename": "cardiac-sentinel-logo.dim_512x512.png",
+      "description": "Cardiac Sentinel wordmark logo with a subtle heart + shield motif, flat vector style",
+      "targetWidth": 512,
+      "targetHeight": 512
+    },
+    {
+      "filename": "watch-illustration.dim_1200x800.png",
+      "description": "Smartwatch product illustration showing a watch face with heart-rate line and SOS indicator, clean minimal style",
+      "targetWidth": 1200,
+      "targetHeight": 800
+    },
+    {
+      "filename": "ui-icons-set.dim_512x512.png",
+      "description": "Small set of three UI icons: heart, shield, SOS button, consistent stroke style",
+      "targetWidth": 512,
+      "targetHeight": 512
+    }
+  ],
+  "gameProjectType": "none",
+  "projectName": "Cardiac Sentinel",
+  "clarification_mode": "instant",
+  "clarification_rounds": 0
+}

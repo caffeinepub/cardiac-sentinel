@@ -1,0 +1,297 @@
+{
+  "kind": "implementation_plan",
+  "version": "1.0",
+  "title": "Cardiac Sentinel companion web app (frontend-only)",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "summary": "Create landing page and distinct Patient + Medical Control Room routed experiences with English-only UI copy.",
+      "acceptanceCriteria": [
+        "App has a landing page describing Cardiac Sentinel and clear navigation to Patient and Medical Control Room sections",
+        "Patient section and Medical Control Room section are accessible as distinct routes/pages",
+        "All user-facing text is in English"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "create",
+          "description": "Create the top-level React app with routing for Landing, Patient, and Medical Control Room experiences, including shared layout (header/nav) and route wiring so pages are reachable."
+        },
+        {
+          "path": "frontend/src/pages/LandingPage.tsx",
+          "operation": "create",
+          "description": "Create an English landing page describing Cardiac Sentinel and providing clear navigation actions to the Patient and Medical Control Room sections."
+        },
+        {
+          "path": "frontend/src/pages/PatientDashboardPage.tsx",
+          "operation": "create",
+          "description": "Create the Patient dashboard page container and wire it into the app router."
+        },
+        {
+          "path": "frontend/src/pages/ControlRoomDashboardPage.tsx",
+          "operation": "create",
+          "description": "Create the Medical Control Room dashboard page container and wire it into the app router (guarded later under REQ-7)."
+        }
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "summary": "Implement Internet Identity sign-in, load/create/update user profile, and persist profile across sessions.",
+      "acceptanceCriteria": [
+        "User can sign in with Internet Identity",
+        "On first sign-in, user can create a profile; on subsequent sign-ins, the existing profile loads",
+        "Profile includes at minimum: display name, emergency contact list (name + phone string), and a free-text address/location field",
+        "Profile changes persist across refresh/re-login"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/Auth/LoginButton.tsx",
+          "operation": "create",
+          "description": "Add a Login/Logout button using Internet Identity state and ensure logout clears cached React Query data (use the selected authorization component guidance; verify the component's usage instructions before implementing)."
+        },
+        {
+          "path": "frontend/src/hooks/useCurrentUserProfile.ts",
+          "operation": "create",
+          "description": "Add React Query hooks to fetch and save the caller profile using the backend actor methods, including correct enabled/loading handling to prevent first-login modal flash (use the selected authorization component guidance; verify the component's usage instructions before implementing)."
+        },
+        {
+          "path": "frontend/src/components/Profile/ProfileSetupModal.tsx",
+          "operation": "create",
+          "description": "Create a first-login profile setup modal (name, age, known condition notes, emergency contacts, free-text address/location) that saves via backend actor and then refreshes cached profile queries."
+        },
+        {
+          "path": "frontend/src/components/Profile/ProfileEditorCard.tsx",
+          "operation": "create",
+          "description": "Create an in-app profile editor UI for authenticated users to update the same profile fields and persist changes via backend actor calls."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Wire authentication UI into the shared header and ensure app content requiring personal data is shown only after sign-in (use the selected authorization component guidance; verify the component's usage instructions before implementing)."
+        }
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "summary": "Implement the Patient dashboard with monitoring status, recent readings, and a manual SOS action that creates an alert and updates history.",
+      "acceptanceCriteria": [
+        "Patient dashboard displays a “Monitoring: Active/Inactive” status indicator",
+        "Patient can create a Manual SOS alert; the alert appears in their alert history instantly",
+        "Recent readings are visible with timestamps and values"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/hooks/usePatientReadings.ts",
+          "operation": "create",
+          "description": "Add React Query hooks to fetch the signed-in patient's recent heart-rate readings and expose loading/error states for the dashboard."
+        },
+        {
+          "path": "frontend/src/hooks/usePatientAlerts.ts",
+          "operation": "create",
+          "description": "Add React Query hooks to fetch alert history relevant to the signed-in patient (as supported by available backend calls) and to create a manual SOS alert, updating cached lists immediately."
+        },
+        {
+          "path": "frontend/src/components/Patient/MonitoringStatusCard.tsx",
+          "operation": "create",
+          "description": "Create a UI card to display current monitoring status (Active/Inactive) and contextual safety copy for the patient."
+        },
+        {
+          "path": "frontend/src/components/Patient/ReadingsList.tsx",
+          "operation": "create",
+          "description": "Create a recent readings list UI that shows timestamps and values with a clear status indicator."
+        },
+        {
+          "path": "frontend/src/components/Patient/SosButton.tsx",
+          "operation": "create",
+          "description": "Create an accessible, visually distinct SOS button that triggers a manual alert via backend actor and reflects the new alert in patient history."
+        },
+        {
+          "path": "frontend/src/pages/PatientDashboardPage.tsx",
+          "operation": "modify",
+          "description": "Compose MonitoringStatusCard, ReadingsList, SOS button, and profile editor into the Patient dashboard layout and ensure it is only usable after authentication (use the selected authorization component guidance; verify the component's usage instructions before implementing)."
+        }
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "summary": "Add a heart-rate monitoring simulation UI to generate periodic readings and automatically create alerts when readings exceed configurable thresholds.",
+      "acceptanceCriteria": [
+        "Patient can start/stop a simulation that produces readings into the backend",
+        "Patient can set an abnormal threshold (e.g., high/low HR) used by the simulation",
+        "When a generated reading is abnormal, an Automatic alert is created and shown in both patient history and control room queue"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/hooks/useMonitoringSimulation.ts",
+          "operation": "create",
+          "description": "Implement a client-side simulation controller (start/stop, interval cadence, threshold settings) that writes generated readings via backend actor and triggers automatic alerts when abnormal."
+        },
+        {
+          "path": "frontend/src/components/Patient/SimulationControlsCard.tsx",
+          "operation": "create",
+          "description": "Create UI controls to start/stop simulation and configure abnormal thresholds (high/low), showing current configuration and last generated reading."
+        },
+        {
+          "path": "frontend/src/pages/PatientDashboardPage.tsx",
+          "operation": "modify",
+          "description": "Wire SimulationControlsCard into the Patient dashboard and connect it to monitoring status + readings refresh so new readings/alerts appear without a full reload."
+        }
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "summary": "Implement Medical Control Room dashboard with polling alerts queue, alert detail view, and status updates.",
+      "acceptanceCriteria": [
+        "Control room view lists alerts sorted by newest first with clear status badges",
+        "Control room can open an alert detail view showing patient name, emergency contacts, free-text address, and triggering reading (if any)",
+        "Control room can change alert status and changes persist and reflect in lists",
+        "Alerts list refreshes automatically on an interval using React Query polling"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/hooks/useControlRoomAlerts.ts",
+          "operation": "create",
+          "description": "Add React Query hooks for control-room alert queue with polling (refetchInterval) and mutations for updating alert status; handle authorization errors with user-friendly messaging."
+        },
+        {
+          "path": "frontend/src/pages/ControlRoomAlertDetailPage.tsx",
+          "operation": "create",
+          "description": "Create a routed alert detail page that loads alert details plus patient profile summary (including emergency contacts and address) and displays reading context if available."
+        },
+        {
+          "path": "frontend/src/components/ControlRoom/AlertsQueueTable.tsx",
+          "operation": "create",
+          "description": "Create an alerts list/queue UI sorted by newest first with clear status badges and navigation to the alert detail view."
+        },
+        {
+          "path": "frontend/src/components/ControlRoom/AlertStatusActions.tsx",
+          "operation": "create",
+          "description": "Create UI controls to update alert status (New, Acknowledged, Dispatched, Resolved) and ensure changes persist via backend actor calls and update cached lists."
+        },
+        {
+          "path": "frontend/src/pages/ControlRoomDashboardPage.tsx",
+          "operation": "modify",
+          "description": "Compose the alerts queue UI, polling behavior, and navigation into the Control Room dashboard."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Register and wire the control room alert detail route so it is navigable from the queue list."
+        }
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "summary": "Add a lightweight frontend access guard for Control Room routes and provide UI for authorized users to add control room users with clear bootstrapping copy.",
+      "acceptanceCriteria": [
+        "Unauthorized principals cannot call control-room list/update APIs (backend returns an error)",
+        "Frontend hides/blocks the Medical Control Room route unless the user is authorized",
+        "At least one admin/authorized principal can be configured via a backend method callable by an existing authorized user (bootstrapping approach documented in UI copy)"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/hooks/useAccessControl.ts",
+          "operation": "create",
+          "description": "Create hooks that check caller role/authorization (e.g., isControlRoomUser/isCallerAdmin/getCallerUserRole) and expose a simple boolean guard state for routing (use the selected authorization component guidance; verify the component's usage instructions before implementing)."
+        },
+        {
+          "path": "frontend/src/components/Auth/AccessDeniedScreen.tsx",
+          "operation": "create",
+          "description": "Create an access denied screen for unauthorized users attempting to reach the Control Room, with English guidance on how access is granted."
+        },
+        {
+          "path": "frontend/src/components/ControlRoom/ControlRoomUserManagementCard.tsx",
+          "operation": "create",
+          "description": "Add a minimal UI for authorized users to add a control-room user by principal (calls backend addControlRoomUser) and include bootstrapping instructions in UI copy (use the selected authorization component guidance; verify the component's usage instructions before implementing)."
+        },
+        {
+          "path": "frontend/src/pages/ControlRoomDashboardPage.tsx",
+          "operation": "modify",
+          "description": "Guard the Control Room dashboard content based on authorization, show AccessDeniedScreen when unauthorized, and include the control-room user management card for authorized users."
+        },
+        {
+          "path": "frontend/src/pages/ControlRoomAlertDetailPage.tsx",
+          "operation": "modify",
+          "description": "Guard the Control Room alert detail page based on authorization and show AccessDeniedScreen when unauthorized."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Hide/disable navigation to the Medical Control Room route unless the user is authorized, while still keeping Patient route accessible after sign-in."
+        }
+      ]
+    },
+    {
+      "id": "REQ-8",
+      "summary": "Apply a cohesive Cardiac Sentinel visual theme (non-blue/purple primary) with accessible, distinct SOS styling.",
+      "acceptanceCriteria": [
+        "Consistent theme is applied to landing page, patient dashboard, and control room dashboard",
+        "Primary palette is not blue/purple; typography and component styling feel cohesive",
+        "Key safety actions (SOS) are visually distinct and accessible"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/index.css",
+          "operation": "create",
+          "description": "Create global styling with Tailwind CSS variables/theme tokens using a medical-safety palette that avoids blue/purple as primary, and define strong accessible styles for destructive/safety actions like SOS."
+        },
+        {
+          "path": "frontend/tailwind.config.js",
+          "operation": "modify",
+          "description": "Adjust Tailwind theme extensions if needed to support the Cardiac Sentinel palette and typography scale consistently across the app."
+        },
+        {
+          "path": "frontend/src/components/Layout/AppShell.tsx",
+          "operation": "create",
+          "description": "Create a reusable layout shell (header, content container, spacing) to enforce consistent typography and spacing across Landing, Patient, and Control Room pages."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Wrap routed pages with the shared AppShell so the visual theme is applied consistently."
+        }
+      ]
+    },
+    {
+      "id": "REQ-9",
+      "summary": "Add generated static brand/illustration assets and render them in the UI without backend fetching.",
+      "acceptanceCriteria": [
+        "Images listed in imageRequirements.required exist under frontend/public/assets/generated",
+        "Landing page and/or header uses the generated logo",
+        "At least one illustration is displayed on the landing page or patient dashboard without fetching through the backend"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/public/assets/generated/cardiac-sentinel-logo.dim_512x512.png",
+          "operation": "create",
+          "description": "Add the generated Cardiac Sentinel wordmark logo asset at the exact required path for static serving."
+        },
+        {
+          "path": "frontend/public/assets/generated/watch-illustration.dim_1200x800.png",
+          "operation": "create",
+          "description": "Add the generated smartwatch product illustration asset at the exact required path for static serving."
+        },
+        {
+          "path": "frontend/public/assets/generated/ui-icons-set.dim_512x512.png",
+          "operation": "create",
+          "description": "Add the generated UI icons set asset at the exact required path for static serving."
+        },
+        {
+          "path": "frontend/src/components/Layout/AppHeader.tsx",
+          "operation": "create",
+          "description": "Create a header component that renders the static logo from frontend/public/assets/generated/cardiac-sentinel-logo.dim_512x512.png and provides global navigation."
+        },
+        {
+          "path": "frontend/src/pages/LandingPage.tsx",
+          "operation": "modify",
+          "description": "Render the illustration from frontend/public/assets/generated/watch-illustration.dim_1200x800.png on the landing page and optionally reference frontend/public/assets/generated/ui-icons-set.dim_512x512.png for feature callouts, all as static assets."
+        },
+        {
+          "path": "frontend/src/components/Layout/AppShell.tsx",
+          "operation": "modify",
+          "description": "Wire AppHeader into the shared shell so the generated logo appears consistently across the app."
+        }
+      ]
+    }
+  ]
+}
