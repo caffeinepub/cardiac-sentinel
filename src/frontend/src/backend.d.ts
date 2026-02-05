@@ -68,10 +68,12 @@ export interface backendInterface {
     assignCallerUserRole(user: Principal, role: UserRole): Promise<void>;
     createEmergencyAlert(type: AlertType, severity: AlertSeverity): Promise<bigint>;
     getAlertDetails(alertId: bigint): Promise<EmergencyAlert>;
+    getAllAlerts(): Promise<Array<EmergencyAlert>>;
     getCallerUserProfile(): Promise<UserProfile | null>;
     getCallerUserRole(): Promise<UserRole>;
     getFullProfile(user: Principal): Promise<[UserProfile, Array<EmergencyContact>, Array<ConditionNote>]>;
     getHeartRateReadings(user: Principal): Promise<Array<HeartRateReading>>;
+    getMyAlerts(): Promise<Array<EmergencyAlert>>;
     getPendingAlerts(): Promise<Array<EmergencyAlert>>;
     getUserProfile(user: Principal): Promise<UserProfile | null>;
     isCallerAdmin(): Promise<boolean>;

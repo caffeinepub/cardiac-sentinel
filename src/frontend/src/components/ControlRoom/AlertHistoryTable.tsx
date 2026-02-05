@@ -1,11 +1,11 @@
 import { useNavigate } from '@tanstack/react-router';
-import { useGetPendingAlerts } from '../../hooks/useControlRoomAlerts';
+import { useGetAllAlerts } from '../../hooks/useControlRoomAlerts';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { AlertCircle, Eye, Clock, Activity } from 'lucide-react';
+import { History, Eye, Clock, Activity, User } from 'lucide-react';
 import { AlertSeverity, AlertStatus, AlertType } from '../../backend';
 
 function formatTimestamp(timestamp: bigint): string {
@@ -54,9 +54,9 @@ function formatType(type: AlertType): string {
   return type === AlertType.automatic ? 'Auto' : 'Manual';
 }
 
-export default function AlertsQueueTable() {
+export default function AlertHistoryTable() {
   const navigate = useNavigate();
-  const { data: alerts = [], isLoading } = useGetPendingAlerts();
+  const { data: alerts = [], isLoading } = useGetAllAlerts();
 
   const sortedAlerts = [...alerts].sort((a, b) => Number(b.timestamp - a.timestamp));
 
@@ -64,61 +64,65 @@ export default function AlertsQueueTable() {
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          <AlertCircle className="h-5 w-5 text-destructive" />
-          Active Alerts Queue
+          <History className="h-5 w-5 text-muted-foreground" />
+          Alert History
         </CardTitle>
-        <CardDescription>Emergency alerts requiring attention (auto-refreshes every 10 seconds)</CardDescription>
+        <CardDescription>Complete history of all emergency alerts</CardDescription>
       </CardHeader>
       <CardContent>
         {isLoading ? (
-          <p className="text-sm text-muted-foreground text-center py-8">Loading alerts...</p>
+          <p className="text-sm text-muted-foreground text-center py-8">Loading alert history...</p>
         ) : sortedAlerts.length === 0 ? (
-          <p className="text-sm text-muted-foreground text-center py-8">No active alerts at this time.</p>
+          <p className="text-sm text-muted-foreground text-center py-8">No alerts in history.</p>
         ) : (
           <>
             {/* Desktop table view */}
             <div className="hidden md:block rounded-md border">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Alert ID</TableHead>
-                    <TableHead>Type</TableHead>
-                    <TableHead>Severity</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Time</TableHead>
-                    <TableHead className="text-right">Actions</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {sortedAlerts.map((alert) => (
-                    <TableRow key={alert.id.toString()}>
-                      <TableCell className="font-medium">#{alert.id.toString()}</TableCell>
-                      <TableCell>{formatType(alert.type)}</TableCell>
-                      <TableCell>
-                        <Badge variant={getSeverityColor(alert.severity)}>{alert.severity}</Badge>
-                      </TableCell>
-                      <TableCell>
-                        <Badge variant={getStatusColor(alert.status)}>{formatStatus(alert.status)}</Badge>
-                      </TableCell>
-                      <TableCell className="text-sm text-muted-foreground">{formatTimestamp(alert.timestamp)}</TableCell>
-                      <TableCell className="text-right">
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => navigate({ to: '/control-room/alert/$alertId', params: { alertId: alert.id.toString() } })}
-                        >
-                          <Eye className="mr-2 h-4 w-4" />
-                          View
-                        </Button>
-                      </TableCell>
+              <ScrollArea className="h-[600px]">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Alert ID</TableHead>
+                      <TableHead>Patient</TableHead>
+                      <TableHead>Type</TableHead>
+                      <TableHead>Severity</TableHead>
+                      <TableHead>Status</TableHead>
+                      <TableHead>Time</TableHead>
+                      <TableHead className="text-right">Actions</TableHead>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+                  </TableHeader>
+                  <TableBody>
+                    {sortedAlerts.map((alert) => (
+                      <TableRow key={alert.id.toString()}>
+                        <TableCell className="font-medium">#{alert.id.toString()}</TableCell>
+                        <TableCell className="font-mono text-xs">{alert.patient.toString().slice(0, 12)}...</TableCell>
+                        <TableCell>{formatType(alert.type)}</TableCell>
+                        <TableCell>
+                          <Badge variant={getSeverityColor(alert.severity)}>{alert.severity}</Badge>
+                        </TableCell>
+                        <TableCell>
+                          <Badge variant={getStatusColor(alert.status)}>{formatStatus(alert.status)}</Badge>
+                        </TableCell>
+                        <TableCell className="text-sm text-muted-foreground">{formatTimestamp(alert.timestamp)}</TableCell>
+                        <TableCell className="text-right">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => navigate({ to: '/control-room/alert/$alertId', params: { alertId: alert.id.toString() } })}
+                          >
+                            <Eye className="mr-2 h-4 w-4" />
+                            View
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </ScrollArea>
             </div>
 
             {/* Mobile card view */}
-            <div className="md:hidden space-y-3">
+            <div className="md:hidden space-y-3 max-h-[600px] overflow-y-auto">
               {sortedAlerts.map((alert) => (
                 <Card key={alert.id.toString()} className="border-2">
                   <CardHeader className="pb-3">
@@ -131,6 +135,10 @@ export default function AlertsQueueTable() {
                     </div>
                   </CardHeader>
                   <CardContent className="space-y-3">
+                    <div className="flex items-center gap-2 text-sm">
+                      <User className="h-4 w-4 text-muted-foreground flex-shrink-0" />
+                      <span className="font-mono text-xs break-all">{alert.patient.toString().slice(0, 20)}...</span>
+                    </div>
                     <div className="flex items-center gap-2 text-sm">
                       <Activity className="h-4 w-4 text-muted-foreground" />
                       <span className="text-muted-foreground">Type:</span>

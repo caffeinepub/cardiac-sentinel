@@ -1,7 +1,7 @@
 import Map "mo:core/Map";
 import Iter "mo:core/Iter";
-import Text "mo:core/Text";
 import Array "mo:core/Array";
+import List "mo:core/List";
 import Runtime "mo:core/Runtime";
 import Time "mo:core/Time";
 import Principal "mo:core/Principal";
@@ -92,7 +92,7 @@ actor {
 
   let emergencyAlerts = Map.empty<Nat, EmergencyAlert>();
 
-  // User profile functions
+  // User profile functions (no changes)
   public query ({ caller }) func getCallerUserProfile() : async ?UserProfile {
     if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
       Runtime.trap("Unauthorized: Only users can save profiles");
@@ -114,7 +114,11 @@ actor {
     saveUserProfile(caller, profile);
   };
 
-  public shared ({ caller }) func saveUserProfileWithContactNote(profile : UserProfile, contacts : [EmergencyContact], notes : [ConditionNote]) : async () {
+  public shared ({ caller }) func saveUserProfileWithContactNote(
+    profile : UserProfile,
+    contacts : [EmergencyContact],
+    notes : [ConditionNote],
+  ) : async () {
     if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
       Runtime.trap("Unauthorized: Only users can save profiles");
     };
@@ -160,7 +164,7 @@ actor {
     };
   };
 
-  // Heart rate readings
+  // Heart rate readings (no changes)
   public shared ({ caller }) func addHeartRateReading(reading : HeartRateReading) : async () {
     if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
       Runtime.trap("Unauthorized: Only users can add readings");
@@ -186,7 +190,7 @@ actor {
     };
   };
 
-  // Emergency alerts
+  // Emergency alerts (updated)
   public shared ({ caller }) func createEmergencyAlert(type_ : AlertType, severity : AlertSeverity) : async Nat {
     if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
       Runtime.trap("Unauthorized: Only users can create alerts");
@@ -248,7 +252,7 @@ actor {
     };
   };
 
-  // Medical control room access
+  // Medical control room access (no changes)
   public query ({ caller }) func isControlRoomUser() : async Bool {
     AccessControl.isAdmin(accessControlState, caller);
   };
@@ -258,5 +262,29 @@ actor {
       Runtime.trap("Unauthorized: Only admins can add control room users");
     };
     ignore user;
+  };
+
+  public query ({ caller }) func getAllAlerts() : async [EmergencyAlert] {
+    if (not AccessControl.isAdmin(accessControlState, caller)) {
+      Runtime.trap("Unauthorized: Only admins can view all alerts");
+    };
+
+    let alerts = emergencyAlerts.values().toArray();
+    let list = List.fromArray<EmergencyAlert>(alerts);
+    list.sortInPlace(func(a, b) { Int.compare(b.timestamp, a.timestamp) });
+    list.toArray();
+  };
+
+  public query ({ caller }) func getMyAlerts() : async [EmergencyAlert] {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
+      Runtime.trap("Unauthorized: Only patients can view their alert history");
+    };
+
+    let alerts = emergencyAlerts.values().toArray().filter(
+      func(alert) { alert.patient == caller }
+    );
+    let list = List.fromArray<EmergencyAlert>(alerts);
+    list.sortInPlace(func(a, b) { Int.compare(b.timestamp, a.timestamp) });
+    list.toArray();
   };
 };

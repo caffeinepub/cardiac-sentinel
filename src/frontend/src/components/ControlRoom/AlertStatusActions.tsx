@@ -27,7 +27,7 @@ export default function AlertStatusActions({ alert }: AlertStatusActionsProps) {
   };
 
   return (
-    <Card className="sticky top-20">
+    <Card className="lg:sticky lg:top-20">
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <CheckCircle2 className="h-5 w-5" />
@@ -39,7 +39,7 @@ export default function AlertStatusActions({ alert }: AlertStatusActionsProps) {
         <div className="space-y-2">
           <Label htmlFor="status-select">Alert Status</Label>
           <Select value={selectedStatus} onValueChange={(value) => setSelectedStatus(value as AlertStatus)}>
-            <SelectTrigger id="status-select">
+            <SelectTrigger id="status-select" className="touch-target">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -51,7 +51,7 @@ export default function AlertStatusActions({ alert }: AlertStatusActionsProps) {
           </Select>
         </div>
 
-        <Button onClick={handleUpdateStatus} disabled={updateStatus.isPending} className="w-full">
+        <Button onClick={handleUpdateStatus} disabled={updateStatus.isPending} className="w-full touch-target">
           {updateStatus.isPending ? 'Updating...' : 'Update Status'}
         </Button>
 

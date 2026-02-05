@@ -1,11 +1,9 @@
-import { useNavigate } from '@tanstack/react-router';
-import { useGetPendingAlerts } from '../../hooks/useControlRoomAlerts';
+import { useGetMyAlerts } from '../../hooks/usePatientAlerts';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { AlertCircle, Eye, Clock, Activity } from 'lucide-react';
+import { History, Clock, Activity } from 'lucide-react';
 import { AlertSeverity, AlertStatus, AlertType } from '../../backend';
 
 function formatTimestamp(timestamp: bigint): string {
@@ -51,12 +49,11 @@ function formatStatus(status: AlertStatus): string {
 }
 
 function formatType(type: AlertType): string {
-  return type === AlertType.automatic ? 'Auto' : 'Manual';
+  return type === AlertType.automatic ? 'Automatic' : 'Manual';
 }
 
-export default function AlertsQueueTable() {
-  const navigate = useNavigate();
-  const { data: alerts = [], isLoading } = useGetPendingAlerts();
+export default function AlertHistoryCard() {
+  const { data: alerts = [], isLoading } = useGetMyAlerts();
 
   const sortedAlerts = [...alerts].sort((a, b) => Number(b.timestamp - a.timestamp));
 
@@ -64,16 +61,16 @@ export default function AlertsQueueTable() {
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          <AlertCircle className="h-5 w-5 text-destructive" />
-          Active Alerts Queue
+          <History className="h-5 w-5 text-muted-foreground" />
+          My Alert History
         </CardTitle>
-        <CardDescription>Emergency alerts requiring attention (auto-refreshes every 10 seconds)</CardDescription>
+        <CardDescription>Your emergency alerts and their current status</CardDescription>
       </CardHeader>
       <CardContent>
         {isLoading ? (
-          <p className="text-sm text-muted-foreground text-center py-8">Loading alerts...</p>
+          <p className="text-sm text-muted-foreground text-center py-8">Loading your alert history...</p>
         ) : sortedAlerts.length === 0 ? (
-          <p className="text-sm text-muted-foreground text-center py-8">No active alerts at this time.</p>
+          <p className="text-sm text-muted-foreground text-center py-8">No alerts in your history.</p>
         ) : (
           <>
             {/* Desktop table view */}
@@ -86,7 +83,6 @@ export default function AlertsQueueTable() {
                     <TableHead>Severity</TableHead>
                     <TableHead>Status</TableHead>
                     <TableHead>Time</TableHead>
-                    <TableHead className="text-right">Actions</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -101,16 +97,6 @@ export default function AlertsQueueTable() {
                         <Badge variant={getStatusColor(alert.status)}>{formatStatus(alert.status)}</Badge>
                       </TableCell>
                       <TableCell className="text-sm text-muted-foreground">{formatTimestamp(alert.timestamp)}</TableCell>
-                      <TableCell className="text-right">
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => navigate({ to: '/control-room/alert/$alertId', params: { alertId: alert.id.toString() } })}
-                        >
-                          <Eye className="mr-2 h-4 w-4" />
-                          View
-                        </Button>
-                      </TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -120,7 +106,7 @@ export default function AlertsQueueTable() {
             {/* Mobile card view */}
             <div className="md:hidden space-y-3">
               {sortedAlerts.map((alert) => (
-                <Card key={alert.id.toString()} className="border-2">
+                <Card key={alert.id.toString()} className="border">
                   <CardHeader className="pb-3">
                     <div className="flex items-start justify-between gap-2">
                       <CardTitle className="text-base">Alert #{alert.id.toString()}</CardTitle>
@@ -130,7 +116,7 @@ export default function AlertsQueueTable() {
                       </div>
                     </div>
                   </CardHeader>
-                  <CardContent className="space-y-3">
+                  <CardContent className="space-y-2">
                     <div className="flex items-center gap-2 text-sm">
                       <Activity className="h-4 w-4 text-muted-foreground" />
                       <span className="text-muted-foreground">Type:</span>
@@ -140,15 +126,6 @@ export default function AlertsQueueTable() {
                       <Clock className="h-4 w-4 text-muted-foreground" />
                       <span className="text-muted-foreground text-xs">{formatTimestamp(alert.timestamp)}</span>
                     </div>
-                    <Button
-                      variant="default"
-                      size="sm"
-                      className="w-full"
-                      onClick={() => navigate({ to: '/control-room/alert/$alertId', params: { alertId: alert.id.toString() } })}
-                    >
-                      <Eye className="mr-2 h-4 w-4" />
-                      View Details
-                    </Button>
                   </CardContent>
                 </Card>
               ))}

@@ -74,7 +74,7 @@ export default function ControlRoomAlertDetailPage() {
 
   if (alertLoading || profileLoading) {
     return (
-      <div className="container mx-auto px-4 py-16">
+      <div className="container mx-auto px-4 py-12 md:py-16">
         <Card className="max-w-2xl mx-auto">
           <CardContent className="py-8 text-center text-muted-foreground">Loading alert details...</CardContent>
         </Card>
@@ -84,7 +84,7 @@ export default function ControlRoomAlertDetailPage() {
 
   if (!alert || !profileData) {
     return (
-      <div className="container mx-auto px-4 py-16">
+      <div className="container mx-auto px-4 py-12 md:py-16">
         <Card className="max-w-2xl mx-auto">
           <CardContent className="py-8 text-center text-muted-foreground">Alert not found</CardContent>
         </Card>
@@ -95,7 +95,7 @@ export default function ControlRoomAlertDetailPage() {
   const [profile, contacts, notes] = profileData;
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-4 py-6 md:py-8">
       <Button variant="ghost" onClick={() => navigate({ to: '/control-room' })} className="mb-6">
         <ArrowLeft className="mr-2 h-4 w-4" />
         Back to Control Room
@@ -106,7 +106,7 @@ export default function ControlRoomAlertDetailPage() {
           {/* Alert Overview */}
           <Card>
             <CardHeader>
-              <div className="flex items-start justify-between">
+              <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
                 <div>
                   <CardTitle className="flex items-center gap-2">
                     <AlertCircle className="h-5 w-5 text-destructive" />
@@ -114,7 +114,7 @@ export default function ControlRoomAlertDetailPage() {
                   </CardTitle>
                   <CardDescription className="mt-2">Emergency alert details and patient information</CardDescription>
                 </div>
-                <div className="flex gap-2">
+                <div className="flex gap-2 flex-wrap">
                   <Badge variant={getSeverityColor(alert.severity)}>{alert.severity}</Badge>
                   <Badge variant={getStatusColor(alert.status)}>{formatStatus(alert.status)}</Badge>
                 </div>
@@ -123,14 +123,14 @@ export default function ControlRoomAlertDetailPage() {
             <CardContent className="space-y-4">
               <div className="grid gap-4 sm:grid-cols-2">
                 <div className="flex items-start gap-3">
-                  <Clock className="h-5 w-5 text-muted-foreground mt-0.5" />
+                  <Clock className="h-5 w-5 text-muted-foreground mt-0.5 flex-shrink-0" />
                   <div>
                     <p className="text-sm font-medium">Alert Time</p>
-                    <p className="text-sm text-muted-foreground">{formatTimestamp(alert.timestamp)}</p>
+                    <p className="text-sm text-muted-foreground break-words">{formatTimestamp(alert.timestamp)}</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
-                  <Activity className="h-5 w-5 text-muted-foreground mt-0.5" />
+                  <Activity className="h-5 w-5 text-muted-foreground mt-0.5 flex-shrink-0" />
                   <div>
                     <p className="text-sm font-medium">Alert Type</p>
                     <p className="text-sm text-muted-foreground">{formatType(alert.type)}</p>
@@ -158,10 +158,10 @@ export default function ControlRoomAlertDetailPage() {
                 <p className="text-base">{profile.age.toString()} years</p>
               </div>
               <div className="flex items-start gap-3">
-                <MapPin className="h-5 w-5 text-muted-foreground mt-0.5" />
-                <div className="flex-1">
+                <MapPin className="h-5 w-5 text-muted-foreground mt-0.5 flex-shrink-0" />
+                <div className="flex-1 min-w-0">
                   <p className="text-sm font-medium mb-1">Location</p>
-                  <p className="text-base">{profile.address || 'Not provided'}</p>
+                  <p className="text-base break-words">{profile.address || 'Not provided'}</p>
                 </div>
               </div>
 
@@ -174,7 +174,7 @@ export default function ControlRoomAlertDetailPage() {
                       {notes.map((note, idx) => (
                         <div key={idx} className="p-3 bg-muted/50 rounded-lg">
                           <p className="font-medium text-sm">{note.name}</p>
-                          <p className="text-xs text-muted-foreground mt-1">{note.description}</p>
+                          <p className="text-xs text-muted-foreground mt-1 break-words">{note.description}</p>
                         </div>
                       ))}
                     </div>
@@ -197,11 +197,11 @@ export default function ControlRoomAlertDetailPage() {
                 <div className="space-y-3">
                   {contacts.map((contact, idx) => (
                     <div key={idx} className="flex items-start gap-3 p-3 bg-muted/50 rounded-lg">
-                      <Phone className="h-5 w-5 text-muted-foreground mt-0.5" />
-                      <div className="flex-1">
-                        <p className="font-medium">{contact.name}</p>
+                      <Phone className="h-5 w-5 text-muted-foreground mt-0.5 flex-shrink-0" />
+                      <div className="flex-1 min-w-0">
+                        <p className="font-medium break-words">{contact.name}</p>
                         <p className="text-sm text-muted-foreground">{contact.relationship}</p>
-                        <p className="text-sm font-mono mt-1">{contact.phone}</p>
+                        <p className="text-sm font-mono mt-1 break-all">{contact.phone}</p>
                       </div>
                     </div>
                   ))}

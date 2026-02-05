@@ -1,69 +1,153 @@
 {
   "schemaVersion": "1.0.0",
-  "projectStateVersion": 4,
-  "summary": "Design/spec for the \"Cardiac Sentinel\" wearable watch plus a companion app or website to support the device’s emergency alerting workflow and user interaction.",
+  "projectStateVersion": 13,
+  "summary": "Expand Cardiac Sentinel from a web dapp into a mobile app deliverable (start converting to a mobile app experience).",
   "existing_features": [
     {
-      "id": "feature-create-a-cardiac-sentinel-companion-web-app-with-two-primary-experiences-1-a-patient-experience-to-view-heart-monitoring-status-and-trigger-sos-and-2-a-medical-control-room-experience-to-receive-and-manage-emergency-alerts",
-      "title": "Create a Cardiac Sentinel companion web app with two primary experiences: (1) a patient experience to view heart monitoring status and trigger SOS, and (2) a medical control room experience to receive and manage emergency alerts.",
+      "id": "IF-1",
+      "title": "Internet Identity authentication and session handling",
+      "synonyms": [
+        "II login",
+        "authentication"
+      ],
+      "description": "Users authenticate via Internet Identity; frontend manages actor/session lifecycle for calling the backend canister.",
+      "reqIds": [
+        "AR-1"
+      ],
+      "version": 1
+    },
+    {
+      "id": "IF-2",
+      "title": "Role-based access control (patient vs control room)",
+      "synonyms": [
+        "RBAC",
+        "authorization"
+      ],
+      "description": "Backend authorization and frontend guards enforce access policies; includes access denied screen and access-control utilities.",
+      "reqIds": [
+        "AR-1"
+      ],
+      "version": 1
+    },
+    {
+      "id": "IF-3",
+      "title": "User profile setup and editing",
+      "synonyms": [
+        "profile editor",
+        "profile setup modal"
+      ],
+      "description": "Create/edit current user profile via dedicated UI (profile setup modal and profile editor card) persisted through backend APIs.",
+      "reqIds": [
+        "AR-1"
+      ],
+      "version": 1
+    },
+    {
+      "id": "IF-4",
+      "title": "Patient dashboard: monitoring status, readings list, and simulation controls",
+      "synonyms": [
+        "patient monitoring",
+        "simulated sensor readings"
+      ],
+      "description": "Patient-facing dashboard shows monitoring status and readings list, with controls to simulate monitoring/readings for demo/testing.",
+      "reqIds": [
+        "AR-1"
+      ],
+      "version": 1
+    },
+    {
+      "id": "IF-5",
+      "title": "Manual SOS activation for patients",
+      "synonyms": [
+        "SOS button",
+        "panic button"
+      ],
+      "description": "Patient can manually trigger an emergency SOS event which creates an alert for the control room workflow.",
+      "reqIds": [
+        "AR-1"
+      ],
+      "version": 1
+    },
+    {
+      "id": "IF-6",
+      "title": "Alert creation and routing workflow (patient -> control room)",
+      "synonyms": [
+        "emergency alerts",
+        "abnormal event alerts"
+      ],
+      "description": "Backend and UI support generating emergency alerts (from SOS/simulation) routed into the medical control room alert queue.",
+      "reqIds": [
+        "AR-1"
+      ],
+      "version": 1
+    },
+    {
+      "id": "IF-7",
+      "title": "Control room dashboard: alerts queue and alert detail management",
+      "synonyms": [
+        "alerts queue table",
+        "alert triage"
+      ],
+      "description": "Control-room UI provides an alerts queue table and per-alert detail page with status/action controls to manage alert lifecycle.",
+      "reqIds": [
+        "AR-1"
+      ],
+      "version": 1
+    },
+    {
+      "id": "IF-8",
+      "title": "Control room user management UI",
+      "synonyms": [
+        "control room user management"
+      ],
+      "description": "Control-room interface includes a user-management card to manage/control room related user access context.",
+      "reqIds": [
+        "AR-1"
+      ],
+      "version": 1
+    },
+    {
+      "id": "IF-9",
+      "title": "App shell, landing page, and navigation layout",
+      "synonyms": [
+        "layout",
+        "header/shell"
+      ],
+      "description": "Frontend includes landing page and shared app shell/header layout with navigation between patient and control-room experiences.",
+      "reqIds": [
+        "AR-1"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-convert-the-existing-cardiac-sentinel-web-ui-into-a-mobile-first-app-like-experience-ensure-all-primary-screens-landing-patient-dashboard-control-room-dashboard-alert-detail-are-fully-responsive-on-common-phone-widths-use-touch-friendly-spacing-sizing-and-avoid-desktop-only-layout-assumptions-e-g-multi-column-sections-collapsing-cleanly-to-single-column",
+      "title": "Convert the existing Cardiac Sentinel web UI into a mobile-first, app-like experience: ensure all primary screens (Landing, Patient Dashboard, Control Room Dashboard, Alert Detail) are fully responsive on common phone widths, use touch-friendly spacing/sizing, and avoid desktop-only layout assumptions (e.g., multi-column sections collapsing cleanly to single column).",
       "reqIds": [
         "REQ-1"
       ],
       "version": 1
     },
     {
-      "id": "feature-implement-internet-identity-sign-in-and-associate-an-authenticated-principal-with-a-user-profile-that-can-be-created-updated-in-the-app-name-age-known-condition-notes-emergency-contacts-home-address-free-text-location",
-      "title": "Implement Internet Identity sign-in and associate an authenticated principal with a user profile that can be created/updated in the app (name, age, known condition notes, emergency contacts, home address/free-text location).",
+      "id": "feature-add-an-installable-pwa-setup-for-cardiac-sentinel-so-it-can-be-added-to-a-phone-home-screen-and-launched-like-an-app-include-a-web-app-manifest-correct-app-icons-and-required-metadata-in-the-html-head-name-short-name-theme-color-display-mode-start-url",
+      "title": "Add an installable PWA setup for Cardiac Sentinel so it can be added to a phone home screen and launched like an app: include a web app manifest, correct app icons, and required metadata in the HTML head (name, short name, theme color, display mode, start URL).",
       "reqIds": [
         "REQ-2"
       ],
       "version": 1
     },
     {
-      "id": "feature-patient-dashboard-show-current-monitoring-status-recent-readings-list-and-a-manual-sos-button-that-creates-a-new-emergency-alert-immediately",
-      "title": "Patient dashboard: show current monitoring status, recent readings list, and a manual SOS button that creates a new emergency alert immediately.",
+      "id": "feature-add-mobile-native-navigation-behavior-implement-a-bottom-navigation-pattern-on-small-screens-for-authenticated-users-patient-and-if-authorized-control-room-while-keeping-the-existing-desktop-header-navigation-for-larger-screens",
+      "title": "Add mobile-native navigation behavior: implement a bottom navigation pattern on small screens for authenticated users (Patient and, if authorized, Control Room), while keeping the existing desktop header navigation for larger screens.",
+      "reqIds": [
+        "REQ-3"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-an-in-app-install-help-surface-e-g-a-lightweight-card-modal-reachable-from-the-landing-page-and-or-header-that-explains-in-english-how-to-install-the-app-on-iphone-safari-and-android-chrome-using-add-to-home-screen",
+      "title": "Add an in-app “Install” help surface (e.g., a lightweight card/modal reachable from the landing page and/or header) that explains in English how to install the app on iPhone (Safari) and Android (Chrome) using “Add to Home Screen.”",
       "reqIds": [
         "REQ-4"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-simulate-watch-sensor-monitoring-in-the-web-app-provide-a-ui-control-to-generate-periodic-heart-rate-readings-and-automatically-create-an-emergency-alert-when-readings-cross-a-configurable-abnormal-threshold",
-      "title": "Simulate watch sensor monitoring in the web app: provide a UI control to generate periodic heart-rate readings and automatically create an emergency alert when readings cross a configurable abnormal threshold.",
-      "reqIds": [
-        "REQ-5"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-medical-control-room-dashboard-display-a-real-time-refreshed-polling-queue-of-incoming-alerts-allow-viewing-alert-details-patient-profile-summary-reading-context-and-allow-updating-alert-status-new-acknowledged-dispatched-resolved",
-      "title": "Medical control room dashboard: display a real-time refreshed (polling) queue of incoming alerts, allow viewing alert details (patient profile summary + reading context), and allow updating alert status (New, Acknowledged, Dispatched, Resolved).",
-      "reqIds": [
-        "REQ-6"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-add-a-lightweight-access-control-mechanism-for-the-medical-control-room-section-e-g-an-allowlist-of-principals-stored-in-the-backend-so-only-authorized-users-can-access-the-control-room-apis-and-ui",
-      "title": "Add a lightweight access control mechanism for the Medical Control Room section (e.g., an allowlist of principals stored in the backend) so only authorized users can access the control room APIs and UI.",
-      "reqIds": [
-        "REQ-7"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-apply-a-coherent-distinctive-visual-theme-for-cardiac-sentinel-across-the-app-colors-typography-spacing-and-components-suitable-for-a-medical-safety-product-avoid-blue-purple-as-primary-brand-colors",
-      "title": "Apply a coherent, distinctive visual theme for Cardiac Sentinel across the app (colors, typography, spacing, and components) suitable for a medical safety product; avoid blue/purple as primary brand colors.",
-      "reqIds": [
-        "REQ-8"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-add-generated-static-brand-illustration-images-and-render-them-in-the-ui-store-in-frontend-public-assets-generated",
-      "title": "Add generated static brand/illustration images and render them in the UI (store in frontend/public/assets/generated).",
-      "reqIds": [
-        "REQ-9"
       ],
       "version": 1
     }
@@ -71,22 +155,8 @@
   "new_feature_requests": [
     {
       "id": "AR-1",
-      "summary": "Cardiac Sentinel watch: monitor heart functions via sensors and automatically send emergency alerts (text) to medical control room and nearest hospital/health center when abnormality/heart attack detected, with optional SOS manual activation",
+      "summary": "Convert Cardiac Sentinel from a web app into a mobile app (mobile-app-ready build and packaging)",
       "reqIds": [],
-      "status": "pending"
-    },
-    {
-      "id": "AR-2",
-      "summary": "Create a companion app or website for the Cardiac Sentinel device",
-      "reqIds": [],
-      "status": "pending"
-    },
-    {
-      "id": "AR-5",
-      "summary": "Add backend data models and APIs to store: user profiles, simulated device readings (heart rate + timestamp + status), and emergency alerts (type: automatic/manual SOS, severity, status, timestamps).",
-      "reqIds": [
-        "REQ-3"
-      ],
       "status": "pending"
     }
   ],
@@ -94,27 +164,40 @@
     "Wearable watch form factor with integrated heart-function sensor monitoring.",
     "Emergency workflow: abnormal detection or heart attack triggers immediate text-message alert routed first to medical control room, then forwarded to nearest hospital/primary health center.",
     "Support both spontaneous (automatic) activation and manual SOS activation by patient.",
-    "Companion software component requested: build an app or a website to support the Cardiac Sentinel watch."
+    "Deployed as an Internet Computer (ICP) dapp with a Motoko backend canister and a React/Vite + Tailwind frontend.",
+    "Authentication uses Internet Identity; frontend creates authenticated actors to call canister methods.",
+    "Authorization uses role-based access control with shared authorization/access-control modules in the backend.",
+    "Monitoring/heart-function inputs are simulated in the UI to generate readings and alerts for workflow demonstration.",
+    "Alert workflow implemented as a queue for medical control room triage with per-alert status/actions.",
+    "Repository now includes a reusable build-template (Dockerfile, deploy scripts, ICP canister yaml scaffolding) for the ICP Motoko + React/Vite/Tailwind dapp.",
+    "Frontend build-template incorporates shadcn/ui component primitives and related tooling (components.json, utilities, UI component set).",
+    "Added build-template tooling/scripts for asset management (resize/prune unused images) and frontend lint rules enforcing Internet Identity provider usage and preventing problematic bigint query keys."
   ],
   "known_issues": [],
   "isFixRequest": false,
-  "imageRequirements": "## Required Images\n- Cardiac Sentinel wordmark logo with a subtle heart + shield motif, flat vector style (cardiac-sentinel-logo.dim_512x512.png)\n- Smartwatch product illustration showing a watch face with heart-rate line and SOS indicator, clean minimal style (watch-illustration.dim_1200x800.png)\n- Small set of three UI icons: heart, shield, SOS button, consistent stroke style (ui-icons-set.dim_512x512.png)",
+  "imageRequirements": "## Edit Images\n- Create a square app icon (frontend/public/assets/generated/cardiac-sentinel-logo.dim_512x512.png > frontend/public/assets/generated/app-icon.dim_192x192.png)\n- Create a square app icon (frontend/public/assets/generated/cardiac-sentinel-logo.dim_512x512.png > frontend/public/assets/generated/app-icon.dim_512x512.png)\n- Create an Apple touch icon (frontend/public/assets/generated/cardiac-sentinel-logo.dim_512x512.png > frontend/public/assets/generated/apple-touch-icon.dim_180x180.png)\n- Create a maskable icon with safe padding (frontend/public/assets/generated/cardiac-sentinel-logo.dim_512x512.png > frontend/public/assets/generated/app-icon-maskable.dim_512x512.png)",
   "generatedImages": [
     {
-      "filename": "cardiac-sentinel-logo.dim_512x512.png",
-      "description": "Cardiac Sentinel wordmark logo with a subtle heart + shield motif, flat vector style",
+      "filename": "frontend/public/assets/generated/app-icon.dim_192x192.png",
+      "description": "Create a square app icon",
+      "targetWidth": 192,
+      "targetHeight": 192
+    },
+    {
+      "filename": "frontend/public/assets/generated/app-icon.dim_512x512.png",
+      "description": "Create a square app icon",
       "targetWidth": 512,
       "targetHeight": 512
     },
     {
-      "filename": "watch-illustration.dim_1200x800.png",
-      "description": "Smartwatch product illustration showing a watch face with heart-rate line and SOS indicator, clean minimal style",
-      "targetWidth": 1200,
-      "targetHeight": 800
+      "filename": "frontend/public/assets/generated/apple-touch-icon.dim_180x180.png",
+      "description": "Create an Apple touch icon",
+      "targetWidth": 180,
+      "targetHeight": 180
     },
     {
-      "filename": "ui-icons-set.dim_512x512.png",
-      "description": "Small set of three UI icons: heart, shield, SOS button, consistent stroke style",
+      "filename": "frontend/public/assets/generated/app-icon-maskable.dim_512x512.png",
+      "description": "Create a maskable icon with safe padding",
       "targetWidth": 512,
       "targetHeight": 512
     }

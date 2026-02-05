@@ -151,10 +151,12 @@ export interface backendInterface {
     assignCallerUserRole(user: Principal, role: UserRole): Promise<void>;
     createEmergencyAlert(type: AlertType, severity: AlertSeverity): Promise<bigint>;
     getAlertDetails(alertId: bigint): Promise<EmergencyAlert>;
+    getAllAlerts(): Promise<Array<EmergencyAlert>>;
     getCallerUserProfile(): Promise<UserProfile | null>;
     getCallerUserRole(): Promise<UserRole>;
     getFullProfile(user: Principal): Promise<[UserProfile, Array<EmergencyContact>, Array<ConditionNote>]>;
     getHeartRateReadings(user: Principal): Promise<Array<HeartRateReading>>;
+    getMyAlerts(): Promise<Array<EmergencyAlert>>;
     getPendingAlerts(): Promise<Array<EmergencyAlert>>;
     getUserProfile(user: Principal): Promise<UserProfile | null>;
     isCallerAdmin(): Promise<boolean>;
@@ -250,32 +252,46 @@ export class Backend implements backendInterface {
             return from_candid_EmergencyAlert_n11(this._uploadFile, this._downloadFile, result);
         }
     }
+    async getAllAlerts(): Promise<Array<EmergencyAlert>> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.getAllAlerts();
+                return from_candid_vec_n19(this._uploadFile, this._downloadFile, result);
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.getAllAlerts();
+            return from_candid_vec_n19(this._uploadFile, this._downloadFile, result);
+        }
+    }
     async getCallerUserProfile(): Promise<UserProfile | null> {
         if (this.processError) {
             try {
                 const result = await this.actor.getCallerUserProfile();
-                return from_candid_opt_n19(this._uploadFile, this._downloadFile, result);
+                return from_candid_opt_n20(this._uploadFile, this._downloadFile, result);
             } catch (e) {
                 this.processError(e);
                 throw new Error("unreachable");
             }
         } else {
             const result = await this.actor.getCallerUserProfile();
-            return from_candid_opt_n19(this._uploadFile, this._downloadFile, result);
+            return from_candid_opt_n20(this._uploadFile, this._downloadFile, result);
         }
     }
     async getCallerUserRole(): Promise<UserRole> {
         if (this.processError) {
             try {
                 const result = await this.actor.getCallerUserRole();
-                return from_candid_UserRole_n20(this._uploadFile, this._downloadFile, result);
+                return from_candid_UserRole_n21(this._uploadFile, this._downloadFile, result);
             } catch (e) {
                 this.processError(e);
                 throw new Error("unreachable");
             }
         } else {
             const result = await this.actor.getCallerUserRole();
-            return from_candid_UserRole_n20(this._uploadFile, this._downloadFile, result);
+            return from_candid_UserRole_n21(this._uploadFile, this._downloadFile, result);
         }
     }
     async getFullProfile(arg0: Principal): Promise<[UserProfile, Array<EmergencyContact>, Array<ConditionNote>]> {
@@ -304,42 +320,56 @@ export class Backend implements backendInterface {
         if (this.processError) {
             try {
                 const result = await this.actor.getHeartRateReadings(arg0);
-                return from_candid_vec_n22(this._uploadFile, this._downloadFile, result);
+                return from_candid_vec_n23(this._uploadFile, this._downloadFile, result);
             } catch (e) {
                 this.processError(e);
                 throw new Error("unreachable");
             }
         } else {
             const result = await this.actor.getHeartRateReadings(arg0);
-            return from_candid_vec_n22(this._uploadFile, this._downloadFile, result);
+            return from_candid_vec_n23(this._uploadFile, this._downloadFile, result);
+        }
+    }
+    async getMyAlerts(): Promise<Array<EmergencyAlert>> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.getMyAlerts();
+                return from_candid_vec_n19(this._uploadFile, this._downloadFile, result);
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.getMyAlerts();
+            return from_candid_vec_n19(this._uploadFile, this._downloadFile, result);
         }
     }
     async getPendingAlerts(): Promise<Array<EmergencyAlert>> {
         if (this.processError) {
             try {
                 const result = await this.actor.getPendingAlerts();
-                return from_candid_vec_n27(this._uploadFile, this._downloadFile, result);
+                return from_candid_vec_n19(this._uploadFile, this._downloadFile, result);
             } catch (e) {
                 this.processError(e);
                 throw new Error("unreachable");
             }
         } else {
             const result = await this.actor.getPendingAlerts();
-            return from_candid_vec_n27(this._uploadFile, this._downloadFile, result);
+            return from_candid_vec_n19(this._uploadFile, this._downloadFile, result);
         }
     }
     async getUserProfile(arg0: Principal): Promise<UserProfile | null> {
         if (this.processError) {
             try {
                 const result = await this.actor.getUserProfile(arg0);
-                return from_candid_opt_n19(this._uploadFile, this._downloadFile, result);
+                return from_candid_opt_n20(this._uploadFile, this._downloadFile, result);
             } catch (e) {
                 this.processError(e);
                 throw new Error("unreachable");
             }
         } else {
             const result = await this.actor.getUserProfile(arg0);
-            return from_candid_opt_n19(this._uploadFile, this._downloadFile, result);
+            return from_candid_opt_n20(this._uploadFile, this._downloadFile, result);
         }
     }
     async isCallerAdmin(): Promise<boolean> {
@@ -425,16 +455,16 @@ function from_candid_AlertType_n15(_uploadFile: (file: ExternalBlob) => Promise<
 function from_candid_EmergencyAlert_n11(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _EmergencyAlert): EmergencyAlert {
     return from_candid_record_n12(_uploadFile, _downloadFile, value);
 }
-function from_candid_HeartRateReading_n23(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _HeartRateReading): HeartRateReading {
-    return from_candid_record_n24(_uploadFile, _downloadFile, value);
+function from_candid_HeartRateReading_n24(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _HeartRateReading): HeartRateReading {
+    return from_candid_record_n25(_uploadFile, _downloadFile, value);
 }
-function from_candid_ReadingStatus_n25(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _ReadingStatus): ReadingStatus {
-    return from_candid_variant_n26(_uploadFile, _downloadFile, value);
+function from_candid_ReadingStatus_n26(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _ReadingStatus): ReadingStatus {
+    return from_candid_variant_n27(_uploadFile, _downloadFile, value);
 }
-function from_candid_UserRole_n20(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _UserRole): UserRole {
-    return from_candid_variant_n21(_uploadFile, _downloadFile, value);
+function from_candid_UserRole_n21(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _UserRole): UserRole {
+    return from_candid_variant_n22(_uploadFile, _downloadFile, value);
 }
-function from_candid_opt_n19(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: [] | [_UserProfile]): UserProfile | null {
+function from_candid_opt_n20(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: [] | [_UserProfile]): UserProfile | null {
     return value.length === 0 ? null : value[0];
 }
 function from_candid_record_n12(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
@@ -461,7 +491,7 @@ function from_candid_record_n12(_uploadFile: (file: ExternalBlob) => Promise<Uin
         severity: from_candid_AlertSeverity_n17(_uploadFile, _downloadFile, value.severity)
     };
 }
-function from_candid_record_n24(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
+function from_candid_record_n25(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
     status: _ReadingStatus;
     value: bigint;
     timestamp: bigint;
@@ -471,7 +501,7 @@ function from_candid_record_n24(_uploadFile: (file: ExternalBlob) => Promise<Uin
     timestamp: bigint;
 } {
     return {
-        status: from_candid_ReadingStatus_n25(_uploadFile, _downloadFile, value.status),
+        status: from_candid_ReadingStatus_n26(_uploadFile, _downloadFile, value.status),
         value: value.value,
         timestamp: value.timestamp
     };
@@ -503,7 +533,7 @@ function from_candid_variant_n18(_uploadFile: (file: ExternalBlob) => Promise<Ui
 }): AlertSeverity {
     return "low" in value ? AlertSeverity.low : "high" in value ? AlertSeverity.high : "medium" in value ? AlertSeverity.medium : value;
 }
-function from_candid_variant_n21(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
+function from_candid_variant_n22(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
     admin: null;
 } | {
     user: null;
@@ -512,7 +542,7 @@ function from_candid_variant_n21(_uploadFile: (file: ExternalBlob) => Promise<Ui
 }): UserRole {
     return "admin" in value ? UserRole.admin : "user" in value ? UserRole.user : "guest" in value ? UserRole.guest : value;
 }
-function from_candid_variant_n26(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
+function from_candid_variant_n27(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
     warning: null;
 } | {
     normal: null;
@@ -521,11 +551,11 @@ function from_candid_variant_n26(_uploadFile: (file: ExternalBlob) => Promise<Ui
 }): ReadingStatus {
     return "warning" in value ? ReadingStatus.warning : "normal" in value ? ReadingStatus.normal : "critical" in value ? ReadingStatus.critical : value;
 }
-function from_candid_vec_n22(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: Array<_HeartRateReading>): Array<HeartRateReading> {
-    return value.map((x)=>from_candid_HeartRateReading_n23(_uploadFile, _downloadFile, x));
-}
-function from_candid_vec_n27(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: Array<_EmergencyAlert>): Array<EmergencyAlert> {
+function from_candid_vec_n19(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: Array<_EmergencyAlert>): Array<EmergencyAlert> {
     return value.map((x)=>from_candid_EmergencyAlert_n11(_uploadFile, _downloadFile, x));
+}
+function from_candid_vec_n23(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: Array<_HeartRateReading>): Array<HeartRateReading> {
+    return value.map((x)=>from_candid_HeartRateReading_n24(_uploadFile, _downloadFile, x));
 }
 function to_candid_AlertSeverity_n9(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: AlertSeverity): _AlertSeverity {
     return to_candid_variant_n10(_uploadFile, _downloadFile, value);

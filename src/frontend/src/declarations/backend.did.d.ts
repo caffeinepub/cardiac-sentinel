@@ -62,6 +62,7 @@ export interface _SERVICE {
   'assignCallerUserRole' : ActorMethod<[Principal, UserRole], undefined>,
   'createEmergencyAlert' : ActorMethod<[AlertType, AlertSeverity], bigint>,
   'getAlertDetails' : ActorMethod<[bigint], EmergencyAlert>,
+  'getAllAlerts' : ActorMethod<[], Array<EmergencyAlert>>,
   'getCallerUserProfile' : ActorMethod<[], [] | [UserProfile]>,
   'getCallerUserRole' : ActorMethod<[], UserRole>,
   'getFullProfile' : ActorMethod<
@@ -69,6 +70,7 @@ export interface _SERVICE {
     [UserProfile, Array<EmergencyContact>, Array<ConditionNote>]
   >,
   'getHeartRateReadings' : ActorMethod<[Principal], Array<HeartRateReading>>,
+  'getMyAlerts' : ActorMethod<[], Array<EmergencyAlert>>,
   'getPendingAlerts' : ActorMethod<[], Array<EmergencyAlert>>,
   'getUserProfile' : ActorMethod<[Principal], [] | [UserProfile]>,
   'isCallerAdmin' : ActorMethod<[], boolean>,

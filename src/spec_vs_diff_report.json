@@ -1,63 +1,46 @@
 {
   "kind": "spec_vs_diff_report",
   "version": "1.0",
-  "generatedAt": "2026-02-04T01:46:02.654Z",
-  "summary": "Diff adds a new Motoko backend actor with profile/reading/alert types and access-control mixins, plus a new TanStack Router-based frontend with Patient and Control Room routes, Internet Identity auth UI, patient monitoring simulation controls, SOS alert creation UI, and control-room alert queue/status management with React Query polling. Some requirements cannot be fully verified due to truncation/omitted files (e.g., landing page content, backend method bodies, and generated image asset files).",
-  "missing_requirements": [],
+  "generatedAt": "2026-02-04T02:13:36.797Z",
+  "summary": "Diff implements key PWA/mobile UX pieces: adds a web manifest and HTML metadata, introduces a role-aware mobile bottom navigation for authenticated users, adds an install help dialog accessible from Landing and Header, and improves mobile usability via safe-area/touch-target utilities and responsive table patterns. However, the requested generated icon image assets themselves are not present in the diff summary, and an unrelated footer attribution/link appears to have been introduced.",
+  "missing_requirements": [
+    {
+      "id": "REQ-2",
+      "requirement": "Use the provided generated icon assets (create 192x192, 512x512, 180x180 Apple touch, and 512x512 maskable icons from the 512x512 source) so the app icon displays correctly after installation.",
+      "reason": "The manifest and index.html reference the new icon paths, but the diff summary does not show the actual icon image files being added/created under frontend/public/assets/generated.",
+      "evidence": [
+        "frontend/public/manifest.webmanifest",
+        "frontend/index.html"
+      ]
+    }
+  ],
   "hallucinated_features": [
     {
-      "description": "Secret-token based access-control initialization via URL parameter (`caffeineAdminToken`) and a private/underscored backend initialization call (`_initializeAccessControlWithSecret`).",
-      "reason": "BuildRequest requires allowlist-based access control with an authorized-user bootstrapping method callable by an existing authorized user, but does not request a URL-secret token bootstrap mechanism or a special initialization endpoint.",
-      "evidence": [
-        "frontend/src/hooks/useActor.ts (uses getSecretParameter('caffeineAdminToken') and calls actor._initializeAccessControlWithSecret(adminToken))",
-        "backend/main.mo (imports authorization mixins; initialization method not shown but implied by frontend call)"
-      ]
-    },
-    {
-      "description": "Footer branding/credit link to caffeine.ai.",
-      "reason": "Not requested in BuildRequest requirements or acceptance criteria.",
+      "description": "Footer attribution/link to caffeine.ai with a © 2026 notice.",
+      "reason": "Not requested by any REQ; introduces new user-facing text and an external link unrelated to PWA/mobile conversion requirements.",
       "evidence": [
         "frontend/src/components/Layout/AppShell.tsx"
       ]
     }
   ],
-  "confidence": 0.55,
+  "confidence": 0.68,
   "changed_files": [
-    "all_files_summary.json",
-    "backend/main.mo",
     "frontend-file-summaries.txt",
-    "frontend/index.css",
     "frontend/index.html",
-    "frontend/src/App.tsx",
-    "frontend/src/components/Auth/AccessDeniedScreen.tsx",
-    "frontend/src/components/Auth/LoginButton.tsx",
+    "frontend/public/manifest.webmanifest",
+    "frontend/src/components/ControlRoom/AlertHistoryTable.tsx",
     "frontend/src/components/ControlRoom/AlertStatusActions.tsx",
     "frontend/src/components/ControlRoom/AlertsQueueTable.tsx",
-    "frontend/src/components/ControlRoom/ControlRoomUserManagementCard.tsx",
     "frontend/src/components/Layout/AppHeader.tsx",
     "frontend/src/components/Layout/AppShell.tsx",
-    "frontend/src/components/Patient/MonitoringStatusCard.tsx",
-    "frontend/src/components/Patient/ReadingsList.tsx",
-    "frontend/src/components/Patient/SimulationControlsCard.tsx",
-    "frontend/src/components/Patient/SosButton.tsx",
-    "frontend/src/components/Profile/ProfileEditorCard.tsx",
-    "frontend/src/components/Profile/ProfileSetupModal.tsx",
-    "frontend/src/hooks/useAccessControl.ts",
-    "frontend/src/hooks/useActor.ts",
-    "frontend/src/hooks/useControlRoomAlerts.ts",
-    "frontend/src/hooks/useCurrentUserProfile.ts",
-    "frontend/src/hooks/useInternetIdentity.ts",
-    "frontend/src/hooks/useMonitoringSimulation.ts",
-    "frontend/src/hooks/usePatientAlerts.ts",
-    "frontend/src/hooks/usePatientReadings.ts",
+    "frontend/src/components/Layout/MobileBottomNav.tsx",
+    "frontend/src/components/PWA/InstallHelpDialog.tsx",
+    "frontend/src/components/Patient/AlertHistoryCard.tsx",
     "frontend/src/index.css",
-    "frontend/src/main.tsx",
     "frontend/src/pages/ControlRoomAlertDetailPage.tsx",
     "frontend/src/pages/ControlRoomDashboardPage.tsx",
     "frontend/src/pages/LandingPage.tsx",
     "frontend/src/pages/PatientDashboardPage.tsx",
-    "frontend/src/utils/urlParams.ts",
-    "frontend/tailwind.config.js",
     "project_state.json"
   ]
 }

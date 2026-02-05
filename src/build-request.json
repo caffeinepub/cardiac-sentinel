@@ -1,205 +1,107 @@
 {
   "kind": "build_request",
-  "title": "Build the Cardiac Sentinel companion web app (patient + medical control room dashboards)",
+  "title": "Start converting Cardiac Sentinel into a mobile-app-ready PWA experience",
   "priority": "normal",
   "requirements": [
     {
       "id": "REQ-1",
-      "text": "Create a Cardiac Sentinel companion web app with two primary experiences: (1) a patient experience to view heart monitoring status and trigger SOS, and (2) a medical control room experience to receive and manage emergency alerts.",
+      "text": "Convert the existing Cardiac Sentinel web UI into a mobile-first, app-like experience: ensure all primary screens (Landing, Patient Dashboard, Control Room Dashboard, Alert Detail) are fully responsive on common phone widths, use touch-friendly spacing/sizing, and avoid desktop-only layout assumptions (e.g., multi-column sections collapsing cleanly to single column).",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-1"
+          "msg-4",
+          "msg-6"
         ],
         "quotes": [
-          "Create a app or a website",
-          "Topic:Cardiac Sentinal"
+          "Convert this into a mobile app",
+          "Get start to convert tha mobile app"
         ]
       },
       "acceptanceCriteria": [
-        "App has a landing page describing Cardiac Sentinel and clear navigation to Patient and Medical Control Room sections",
-        "Patient section and Medical Control Room section are accessible as distinct routes/pages",
-        "All user-facing text is in English"
+        "On ~360px wide viewports, no horizontal scrolling occurs on Landing, Patient, Control Room, or Alert Detail pages",
+        "All primary interactive controls (buttons, selects, table row actions) are comfortably tappable on mobile (no cramped click targets)",
+        "Tables used on mobile (e.g., alert queues/history) remain usable via responsive patterns (e.g., stacked rows or horizontal scroll with clear affordance) without breaking layout"
       ]
     },
     {
       "id": "REQ-2",
-      "text": "Implement Internet Identity sign-in and associate an authenticated principal with a user profile that can be created/updated in the app (name, age, known condition notes, emergency contacts, home address/free-text location).",
-      "target": "both",
+      "text": "Add an installable PWA setup for Cardiac Sentinel so it can be added to a phone home screen and launched like an app: include a web app manifest, correct app icons, and required metadata in the HTML head (name, short name, theme color, display mode, start URL).",
+      "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-1"
+          "msg-4",
+          "msg-6"
         ],
         "quotes": [
-          "A device that protects heart patients."
+          "Convert this into a mobile app",
+          "Get start to convert tha mobile app"
         ]
       },
       "acceptanceCriteria": [
-        "User can sign in with Internet Identity",
-        "On first sign-in, user can create a profile; on subsequent sign-ins, the existing profile loads",
-        "Profile includes at minimum: display name, emergency contact list (name + phone string), and a free-text address/location field",
-        "Profile changes persist across refresh/re-login"
+        "The app includes a valid web app manifest referenced from the HTML entry point",
+        "When opened in a mobile browser, the app is eligible for “Add to Home Screen” and launches in standalone/app-like mode after installation",
+        "App icon displays correctly on the home screen using the provided generated icon assets"
       ]
     },
     {
       "id": "REQ-3",
-      "text": "Add backend data models and APIs to store: user profiles, simulated device readings (heart rate + timestamp + status), and emergency alerts (type: automatic/manual SOS, severity, status, timestamps).",
-      "target": "backend",
+      "text": "Add mobile-native navigation behavior: implement a bottom navigation pattern on small screens for authenticated users (Patient and, if authorized, Control Room), while keeping the existing desktop header navigation for larger screens.",
+      "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-1"
+          "msg-4",
+          "msg-6"
         ],
         "quotes": [
-          "This Sensor monitors the heart's functions'",
-          "It can also be activated Spontaneously."
+          "Convert this into a mobile app",
+          "Get start to convert tha mobile app"
         ]
       },
       "acceptanceCriteria": [
-        "Backend exposes update/query methods for profiles, readings, and alerts",
-        "Alerts and readings are persisted in canister state and can be fetched after page reload",
-        "APIs enforce that a user can only create/read their own profile/readings/alerts, while control room can list all alerts (see REQ-6)"
+        "On small screens, primary navigation is accessible via a bottom nav without requiring precision taps in the header",
+        "Navigation options remain role-aware (Control Room entry only appears for control room users)",
+        "On larger screens, the existing header-based navigation remains available and functional"
       ]
     },
     {
       "id": "REQ-4",
-      "text": "Patient dashboard: show current monitoring status, recent readings list, and a manual SOS button that creates a new emergency alert immediately.",
-      "target": "both",
-      "source": {
-        "messageIds": [
-          "msg-1"
-        ],
-        "quotes": [
-          "A Small Part of this device is in the form of an (Sos)... but it can be activated by the victim. and then emergency help can received. It can also be activated Spontaneously."
-        ]
-      },
-      "acceptanceCriteria": [
-        "Patient dashboard displays a “Monitoring: Active/Inactive” status indicator",
-        "Patient can create a Manual SOS alert; the alert appears in their alert history instantly",
-        "Recent readings are visible with timestamps and values"
-      ]
-    },
-    {
-      "id": "REQ-5",
-      "text": "Simulate watch sensor monitoring in the web app: provide a UI control to generate periodic heart-rate readings and automatically create an emergency alert when readings cross a configurable abnormal threshold.",
-      "target": "both",
-      "source": {
-        "messageIds": [
-          "msg-1"
-        ],
-        "quotes": [
-          "Regardless of the Condition of Cordiac patients, if there is a change in their Cardiac function or a heart attack occurs, the informations will be Immediately Sent to the nearest medical Service"
-        ]
-      },
-      "acceptanceCriteria": [
-        "Patient can start/stop a simulation that produces readings into the backend",
-        "Patient can set an abnormal threshold (e.g., high/low HR) used by the simulation",
-        "When a generated reading is abnormal, an Automatic alert is created and shown in both patient history and control room queue"
-      ]
-    },
-    {
-      "id": "REQ-6",
-      "text": "Medical control room dashboard: display a real-time refreshed (polling) queue of incoming alerts, allow viewing alert details (patient profile summary + reading context), and allow updating alert status (New, Acknowledged, Dispatched, Resolved).",
-      "target": "both",
-      "source": {
-        "messageIds": [
-          "msg-1"
-        ],
-        "quotes": [
-          "That informations will first be Sent to the medical Control room.",
-          "The informations will then be sent to the patient's nearest hospital or primary health Center"
-        ]
-      },
-      "acceptanceCriteria": [
-        "Control room view lists alerts sorted by newest first with clear status badges",
-        "Control room can open an alert detail view showing patient name, emergency contacts, free-text address, and triggering reading (if any)",
-        "Control room can change alert status and changes persist and reflect in lists",
-        "Alerts list refreshes automatically on an interval using React Query polling"
-      ]
-    },
-    {
-      "id": "REQ-7",
-      "text": "Add a lightweight access control mechanism for the Medical Control Room section (e.g., an allowlist of principals stored in the backend) so only authorized users can access the control room APIs and UI.",
-      "target": "both",
-      "source": {
-        "messageIds": [
-          "msg-1"
-        ],
-        "quotes": [
-          "The alert ... reaches the medical control room"
-        ]
-      },
-      "acceptanceCriteria": [
-        "Unauthorized principals cannot call control-room list/update APIs (backend returns an error)",
-        "Frontend hides/blocks the Medical Control Room route unless the user is authorized",
-        "At least one admin/authorized principal can be configured via a backend method callable by an existing authorized user (bootstrapping approach documented in UI copy)"
-      ]
-    },
-    {
-      "id": "REQ-8",
-      "text": "Apply a coherent, distinctive visual theme for Cardiac Sentinel across the app (colors, typography, spacing, and components) suitable for a medical safety product; avoid blue/purple as primary brand colors.",
+      "text": "Add an in-app “Install” help surface (e.g., a lightweight card/modal reachable from the landing page and/or header) that explains in English how to install the app on iPhone (Safari) and Android (Chrome) using “Add to Home Screen.”",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-1"
+          "msg-2",
+          "msg-4"
         ],
         "quotes": [
-          "Theme: “A device that protects heart patients.”"
+          "How to download this app",
+          "Convert this into a mobile app"
         ]
       },
       "acceptanceCriteria": [
-        "Consistent theme is applied to landing page, patient dashboard, and control room dashboard",
-        "Primary palette is not blue/purple; typography and component styling feel cohesive",
-        "Key safety actions (SOS) are visually distinct and accessible"
-      ]
-    },
-    {
-      "id": "REQ-9",
-      "text": "Add generated static brand/illustration images and render them in the UI (store in frontend/public/assets/generated).",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-1"
-        ],
-        "quotes": [
-          "TYPE: WATCH TYPE"
-        ]
-      },
-      "acceptanceCriteria": [
-        "Images listed in imageRequirements.required exist under frontend/public/assets/generated",
-        "Landing page and/or header uses the generated logo",
-        "At least one illustration is displayed on the landing page or patient dashboard without fetching through the backend"
+        "Install instructions are written in English and clearly separated for iPhone and Android",
+        "The help surface is accessible without authentication from the Landing page",
+        "Instructions do not claim App Store / Play Store availability"
       ]
     }
   ],
   "constraints": [
-    "Backend must remain a single Motoko actor in backend/main.mo",
-    "Do not edit files under frontend/src/components/ui or other immutable paths (compose them instead)",
-    "Do not implement real SMS/text-message sending or external messaging integrations (not supported); represent notifications within the app as persisted alerts"
+    "Do not edit files under frontend/src/components/ui (Shadcn UI components are read-only); compose them instead.",
+    "Do not edit frontend/src/hooks/useInternetIdentity.ts, frontend/src/hooks/useInternetIdentity.tsx, frontend/src/hooks/useActor.ts, or frontend/src/main.tsx (immutable paths).",
+    "Backend remains single-actor Motoko; avoid introducing additional backend canisters or external services.",
+    "Use English for any user-facing text."
   ],
   "nonGoals": [
-    "Integrating with real smartwatch sensors or Apple Watch APIs",
-    "GPS/maps-based location tracking",
-    "Third-party authentication providers beyond Internet Identity",
-    "Real-time websockets; use polling/refresh instead"
+    "Building a native iOS/Android application package (App Store / Play Store submission) as part of this change",
+    "Adding real device integrations (health sensors, SMS, GPS/location) as part of this change",
+    "Changing authentication provider (Internet Identity remains the only auth method)"
   ],
   "imageRequirements": {
-    "required": [
-      "Cardiac Sentinel wordmark logo with a subtle heart + shield motif, flat vector style (cardiac-sentinel-logo.dim_512x512.png)",
-      "Smartwatch product illustration showing a watch face with heart-rate line and SOS indicator, clean minimal style (watch-illustration.dim_1200x800.png)",
-      "Small set of three UI icons: heart, shield, SOS button, consistent stroke style (ui-icons-set.dim_512x512.png)"
-    ],
-    "edits": []
-  },
-  "userProfileUpdate": {
-    "goalsToAdd": [],
-    "goalsToRemove": [],
-    "preferencesToAdd": [
-      "Use English for all user-facing text"
-    ],
-    "preferencesToRemove": [],
-    "miscToAdd": [],
-    "miscToRemove": [],
-    "fieldsToSet": {},
-    "fieldsToDelete": []
+    "required": [],
+    "edits": [
+      "Create a square app icon (frontend/public/assets/generated/cardiac-sentinel-logo.dim_512x512.png > frontend/public/assets/generated/app-icon.dim_192x192.png)",
+      "Create a square app icon (frontend/public/assets/generated/cardiac-sentinel-logo.dim_512x512.png > frontend/public/assets/generated/app-icon.dim_512x512.png)",
+      "Create an Apple touch icon (frontend/public/assets/generated/cardiac-sentinel-logo.dim_512x512.png > frontend/public/assets/generated/apple-touch-icon.dim_180x180.png)",
+      "Create a maskable icon with safe padding (frontend/public/assets/generated/cardiac-sentinel-logo.dim_512x512.png > frontend/public/assets/generated/app-icon-maskable.dim_512x512.png)"
+    ]
   }
 }

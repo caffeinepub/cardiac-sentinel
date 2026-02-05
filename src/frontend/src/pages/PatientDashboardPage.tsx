@@ -6,6 +6,7 @@ import MonitoringStatusCard from '../components/Patient/MonitoringStatusCard';
 import ReadingsList from '../components/Patient/ReadingsList';
 import SosButton from '../components/Patient/SosButton';
 import SimulationControlsCard from '../components/Patient/SimulationControlsCard';
+import AlertHistoryCard from '../components/Patient/AlertHistoryCard';
 import ProfileEditorCard from '../components/Profile/ProfileEditorCard';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -20,7 +21,7 @@ export default function PatientDashboardPage() {
 
   if (!isAuthenticated) {
     return (
-      <div className="container mx-auto px-4 py-16">
+      <div className="container mx-auto px-4 py-12 md:py-16">
         <Card className="max-w-md mx-auto">
           <CardHeader className="text-center">
             <div className="mx-auto h-12 w-12 rounded-full bg-destructive/10 flex items-center justify-center mb-4">
@@ -40,10 +41,10 @@ export default function PatientDashboardPage() {
   return (
     <>
       <ProfileSetupModal open={showProfileSetup} />
-      <div className="container mx-auto px-4 py-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-2">Patient Dashboard</h1>
-          <p className="text-muted-foreground">
+      <div className="container mx-auto px-4 py-6 md:py-8">
+        <div className="mb-6 md:mb-8">
+          <h1 className="text-2xl md:text-3xl font-bold mb-2">Patient Dashboard</h1>
+          <p className="text-sm md:text-base text-muted-foreground">
             Monitor your heart health and manage emergency settings
             {userProfile && <span className="ml-2">• Welcome, {userProfile.name}</span>}
           </p>
@@ -61,6 +62,7 @@ export default function PatientDashboardPage() {
                 <MonitoringStatusCard />
                 <SimulationControlsCard />
                 <ReadingsList />
+                <AlertHistoryCard />
               </div>
               <div>
                 <SosButton />

@@ -1,298 +1,115 @@
 {
   "kind": "coverage_report",
   "version": "1.0",
-  "generatedAt": "2026-02-04T01:46:02.688Z",
+  "generatedAt": "2026-02-04T02:13:36.833Z",
   "sources": {
     "buildRequest": true,
     "implementationPlan": true
   },
   "requirements": {
-    "total": 9,
-    "implemented": 8,
+    "total": 4,
+    "implemented": 4,
     "items": [
       {
         "id": "REQ-1",
-        "summary": "Create a Cardiac Sentinel companion web app with two primary experiences: (1) a patient experience to view heart monitoring status and trigger SOS, and (2) a medical control room experience to receive and manage emergency alerts.",
+        "summary": "Convert the existing Cardiac Sentinel web UI into a mobile-first, app-like experience: ensure all primary screens (Landing, Patient Dashboard, Control Room Dashboard, Alert Detail) are fully responsive on common phone widths, use touch-friendly spacing/sizing, and avoid desktop-only layout assumptions (e.g., multi-column sections collapsing cleanly to single column).",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/App.tsx",
+          "frontend/src/index.css",
           "frontend/src/pages/LandingPage.tsx",
           "frontend/src/pages/PatientDashboardPage.tsx",
-          "frontend/src/pages/ControlRoomDashboardPage.tsx"
+          "frontend/src/pages/ControlRoomDashboardPage.tsx",
+          "frontend/src/pages/ControlRoomAlertDetailPage.tsx",
+          "frontend/src/components/ControlRoom/AlertsQueueTable.tsx",
+          "frontend/src/components/ControlRoom/AlertHistoryTable.tsx",
+          "frontend/src/components/Patient/AlertHistoryCard.tsx",
+          "frontend/src/components/ControlRoom/AlertStatusActions.tsx"
         ],
         "matchedFiles": [
-          "frontend/src/App.tsx",
+          "frontend/src/index.css",
           "frontend/src/pages/LandingPage.tsx",
           "frontend/src/pages/PatientDashboardPage.tsx",
-          "frontend/src/pages/ControlRoomDashboardPage.tsx"
+          "frontend/src/pages/ControlRoomDashboardPage.tsx",
+          "frontend/src/pages/ControlRoomAlertDetailPage.tsx",
+          "frontend/src/components/ControlRoom/AlertsQueueTable.tsx",
+          "frontend/src/components/ControlRoom/AlertHistoryTable.tsx",
+          "frontend/src/components/Patient/AlertHistoryCard.tsx",
+          "frontend/src/components/ControlRoom/AlertStatusActions.tsx"
         ]
       },
       {
         "id": "REQ-2",
-        "summary": "Implement Internet Identity sign-in and associate an authenticated principal with a user profile that can be created/updated in the app (name, age, known condition notes, emergency contacts, home address/free-text location).",
+        "summary": "Add an installable PWA setup for Cardiac Sentinel so it can be added to a phone home screen and launched like an app: include a web app manifest, correct app icons, and required metadata in the HTML head (name, short name, theme color, display mode, start URL).",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/components/Auth/LoginButton.tsx",
-          "frontend/src/hooks/useCurrentUserProfile.ts",
-          "frontend/src/components/Profile/ProfileSetupModal.tsx",
-          "frontend/src/components/Profile/ProfileEditorCard.tsx",
-          "frontend/src/App.tsx"
+          "frontend/index.html",
+          "frontend/public/manifest.webmanifest",
+          "frontend/public/assets/generated/app-icon.dim_192x192.png",
+          "frontend/public/assets/generated/app-icon.dim_512x512.png",
+          "frontend/public/assets/generated/apple-touch-icon.dim_180x180.png",
+          "frontend/public/assets/generated/app-icon-maskable.dim_512x512.png"
         ],
         "matchedFiles": [
-          "frontend/src/components/Auth/LoginButton.tsx",
-          "frontend/src/hooks/useCurrentUserProfile.ts",
-          "frontend/src/components/Profile/ProfileSetupModal.tsx",
-          "frontend/src/components/Profile/ProfileEditorCard.tsx",
-          "frontend/src/App.tsx"
+          "frontend/index.html",
+          "frontend/public/manifest.webmanifest"
         ]
       },
       {
         "id": "REQ-3",
-        "summary": "Add backend data models and APIs to store: user profiles, simulated device readings (heart rate + timestamp + status), and emergency alerts (type: automatic/manual SOS, severity, status, timestamps).",
-        "status": "unknown",
-        "plannedFiles": [],
-        "matchedFiles": []
+        "summary": "Add mobile-native navigation behavior: implement a bottom navigation pattern on small screens for authenticated users (Patient and, if authorized, Control Room), while keeping the existing desktop header navigation for larger screens.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/components/Layout/MobileBottomNav.tsx",
+          "frontend/src/components/Layout/AppHeader.tsx",
+          "frontend/src/components/Layout/AppShell.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/components/Layout/MobileBottomNav.tsx",
+          "frontend/src/components/Layout/AppHeader.tsx",
+          "frontend/src/components/Layout/AppShell.tsx"
+        ]
       },
       {
         "id": "REQ-4",
-        "summary": "Patient dashboard: show current monitoring status, recent readings list, and a manual SOS button that creates a new emergency alert immediately.",
+        "summary": "Add an in-app “Install” help surface (e.g., a lightweight card/modal reachable from the landing page and/or header) that explains in English how to install the app on iPhone (Safari) and Android (Chrome) using “Add to Home Screen.”",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/hooks/usePatientReadings.ts",
-          "frontend/src/hooks/usePatientAlerts.ts",
-          "frontend/src/components/Patient/MonitoringStatusCard.tsx",
-          "frontend/src/components/Patient/ReadingsList.tsx",
-          "frontend/src/components/Patient/SosButton.tsx",
-          "frontend/src/pages/PatientDashboardPage.tsx"
-        ],
-        "matchedFiles": [
-          "frontend/src/hooks/usePatientReadings.ts",
-          "frontend/src/hooks/usePatientAlerts.ts",
-          "frontend/src/components/Patient/MonitoringStatusCard.tsx",
-          "frontend/src/components/Patient/ReadingsList.tsx",
-          "frontend/src/components/Patient/SosButton.tsx",
-          "frontend/src/pages/PatientDashboardPage.tsx"
-        ]
-      },
-      {
-        "id": "REQ-5",
-        "summary": "Simulate watch sensor monitoring in the web app: provide a UI control to generate periodic heart-rate readings and automatically create an emergency alert when readings cross a configurable abnormal threshold.",
-        "status": "implemented",
-        "plannedFiles": [
-          "frontend/src/hooks/useMonitoringSimulation.ts",
-          "frontend/src/components/Patient/SimulationControlsCard.tsx",
-          "frontend/src/pages/PatientDashboardPage.tsx"
-        ],
-        "matchedFiles": [
-          "frontend/src/hooks/useMonitoringSimulation.ts",
-          "frontend/src/components/Patient/SimulationControlsCard.tsx",
-          "frontend/src/pages/PatientDashboardPage.tsx"
-        ]
-      },
-      {
-        "id": "REQ-6",
-        "summary": "Medical control room dashboard: display a real-time refreshed (polling) queue of incoming alerts, allow viewing alert details (patient profile summary + reading context), and allow updating alert status (New, Acknowledged, Dispatched, Resolved).",
-        "status": "implemented",
-        "plannedFiles": [
-          "frontend/src/hooks/useControlRoomAlerts.ts",
-          "frontend/src/pages/ControlRoomAlertDetailPage.tsx",
-          "frontend/src/components/ControlRoom/AlertsQueueTable.tsx",
-          "frontend/src/components/ControlRoom/AlertStatusActions.tsx",
-          "frontend/src/pages/ControlRoomDashboardPage.tsx",
-          "frontend/src/App.tsx"
-        ],
-        "matchedFiles": [
-          "frontend/src/hooks/useControlRoomAlerts.ts",
-          "frontend/src/pages/ControlRoomAlertDetailPage.tsx",
-          "frontend/src/components/ControlRoom/AlertsQueueTable.tsx",
-          "frontend/src/components/ControlRoom/AlertStatusActions.tsx",
-          "frontend/src/pages/ControlRoomDashboardPage.tsx",
-          "frontend/src/App.tsx"
-        ]
-      },
-      {
-        "id": "REQ-7",
-        "summary": "Add a lightweight access control mechanism for the Medical Control Room section (e.g., an allowlist of principals stored in the backend) so only authorized users can access the control room APIs and UI.",
-        "status": "implemented",
-        "plannedFiles": [
-          "frontend/src/hooks/useAccessControl.ts",
-          "frontend/src/components/Auth/AccessDeniedScreen.tsx",
-          "frontend/src/components/ControlRoom/ControlRoomUserManagementCard.tsx",
-          "frontend/src/pages/ControlRoomDashboardPage.tsx",
-          "frontend/src/pages/ControlRoomAlertDetailPage.tsx",
-          "frontend/src/App.tsx"
-        ],
-        "matchedFiles": [
-          "frontend/src/hooks/useAccessControl.ts",
-          "frontend/src/components/Auth/AccessDeniedScreen.tsx",
-          "frontend/src/components/ControlRoom/ControlRoomUserManagementCard.tsx",
-          "frontend/src/pages/ControlRoomDashboardPage.tsx",
-          "frontend/src/pages/ControlRoomAlertDetailPage.tsx",
-          "frontend/src/App.tsx"
-        ]
-      },
-      {
-        "id": "REQ-8",
-        "summary": "Apply a coherent, distinctive visual theme for Cardiac Sentinel across the app (colors, typography, spacing, and components) suitable for a medical safety product; avoid blue/purple as primary brand colors.",
-        "status": "implemented",
-        "plannedFiles": [
-          "frontend/src/index.css",
-          "frontend/tailwind.config.js",
-          "frontend/src/components/Layout/AppShell.tsx",
-          "frontend/src/App.tsx"
-        ],
-        "matchedFiles": [
-          "frontend/src/index.css",
-          "frontend/tailwind.config.js",
-          "frontend/src/components/Layout/AppShell.tsx",
-          "frontend/src/App.tsx"
-        ]
-      },
-      {
-        "id": "REQ-9",
-        "summary": "Add generated static brand/illustration images and render them in the UI (store in frontend/public/assets/generated).",
-        "status": "implemented",
-        "plannedFiles": [
-          "frontend/public/assets/generated/cardiac-sentinel-logo.dim_512x512.png",
-          "frontend/public/assets/generated/watch-illustration.dim_1200x800.png",
-          "frontend/public/assets/generated/ui-icons-set.dim_512x512.png",
-          "frontend/src/components/Layout/AppHeader.tsx",
+          "frontend/src/components/PWA/InstallHelpDialog.tsx",
           "frontend/src/pages/LandingPage.tsx",
-          "frontend/src/components/Layout/AppShell.tsx"
+          "frontend/src/components/Layout/AppHeader.tsx"
         ],
         "matchedFiles": [
-          "frontend/public/assets/generated/cardiac-sentinel-logo.dim_512x512.png",
-          "frontend/public/assets/generated/watch-illustration.dim_1200x800.png",
-          "frontend/public/assets/generated/ui-icons-set.dim_512x512.png",
-          "frontend/src/components/Layout/AppHeader.tsx",
+          "frontend/src/components/PWA/InstallHelpDialog.tsx",
           "frontend/src/pages/LandingPage.tsx",
-          "frontend/src/components/Layout/AppShell.tsx"
+          "frontend/src/components/Layout/AppHeader.tsx"
         ]
       }
     ]
   },
   "changedFiles": [
-    "backend/authorization/MixinAuthorization.mo",
-    "backend/authorization/access-control.mo",
-    "backend/main.mo",
     "build-request.json",
-    "build-template/Dockerfile",
-    "build-template/LICENSE",
-    "build-template/README.md",
-    "build-template/deploy.sh",
-    "build-template/icp.yaml",
-    "build-template/package.json",
-    "build-template/pnpm-lock.yaml",
-    "build-template/pnpm-workspace.yaml",
-    "build-template/scripts/prune-unused-images.js",
-    "build-template/scripts/resize-images.js",
-    "build-template/src/backend/canister.yaml",
-    "build-template/src/backend/system-idl/aaaaa-aa.did",
-    "build-template/src/frontend/canister.yaml",
-    "build-template/src/frontend/components.json",
-    "build-template/src/frontend/env.json",
-    "build-template/src/frontend/eslint-rules/no-bigint-in-query-keys.js",
-    "build-template/src/frontend/eslint-rules/require-internet-identity-provider.js",
-    "build-template/src/frontend/eslint.config.js",
-    "build-template/src/frontend/package.json",
-    "build-template/src/frontend/postcss.config.js",
-    "build-template/src/frontend/src/components/ui/accordion.tsx",
-    "build-template/src/frontend/src/components/ui/alert-dialog.tsx",
-    "build-template/src/frontend/src/components/ui/alert.tsx",
-    "build-template/src/frontend/src/components/ui/aspect-ratio.tsx",
-    "build-template/src/frontend/src/components/ui/avatar.tsx",
-    "build-template/src/frontend/src/components/ui/badge.tsx",
-    "build-template/src/frontend/src/components/ui/breadcrumb.tsx",
-    "build-template/src/frontend/src/components/ui/button.tsx",
-    "build-template/src/frontend/src/components/ui/calendar.tsx",
-    "build-template/src/frontend/src/components/ui/card.tsx",
-    "build-template/src/frontend/src/components/ui/carousel.tsx",
-    "build-template/src/frontend/src/components/ui/chart.tsx",
-    "build-template/src/frontend/src/components/ui/checkbox.tsx",
-    "build-template/src/frontend/src/components/ui/collapsible.tsx",
-    "build-template/src/frontend/src/components/ui/command.tsx",
-    "build-template/src/frontend/src/components/ui/context-menu.tsx",
-    "build-template/src/frontend/src/components/ui/dialog.tsx",
-    "build-template/src/frontend/src/components/ui/drawer.tsx",
-    "build-template/src/frontend/src/components/ui/dropdown-menu.tsx",
-    "build-template/src/frontend/src/components/ui/form.tsx",
-    "build-template/src/frontend/src/components/ui/hover-card.tsx",
-    "build-template/src/frontend/src/components/ui/input-otp.tsx",
-    "build-template/src/frontend/src/components/ui/input.tsx",
-    "build-template/src/frontend/src/components/ui/label.tsx",
-    "build-template/src/frontend/src/components/ui/menubar.tsx",
-    "build-template/src/frontend/src/components/ui/navigation-menu.tsx",
-    "build-template/src/frontend/src/components/ui/pagination.tsx",
-    "build-template/src/frontend/src/components/ui/popover.tsx",
-    "build-template/src/frontend/src/components/ui/progress.tsx",
-    "build-template/src/frontend/src/components/ui/radio-group.tsx",
-    "build-template/src/frontend/src/components/ui/resizable.tsx",
-    "build-template/src/frontend/src/components/ui/scroll-area.tsx",
-    "build-template/src/frontend/src/components/ui/select.tsx",
-    "build-template/src/frontend/src/components/ui/separator.tsx",
-    "build-template/src/frontend/src/components/ui/sheet.tsx",
-    "build-template/src/frontend/src/components/ui/sidebar.tsx",
-    "build-template/src/frontend/src/components/ui/skeleton.tsx",
-    "build-template/src/frontend/src/components/ui/slider.tsx",
-    "build-template/src/frontend/src/components/ui/sonner.tsx",
-    "build-template/src/frontend/src/components/ui/switch.tsx",
-    "build-template/src/frontend/src/components/ui/table.tsx",
-    "build-template/src/frontend/src/components/ui/tabs.tsx",
-    "build-template/src/frontend/src/components/ui/textarea.tsx",
-    "build-template/src/frontend/src/components/ui/toggle-group.tsx",
-    "build-template/src/frontend/src/components/ui/toggle.tsx",
-    "build-template/src/frontend/src/components/ui/tooltip.tsx",
-    "build-template/src/frontend/src/hooks/use-mobile.tsx",
-    "build-template/src/frontend/src/lib/utils.ts",
-    "build-template/src/frontend/tsconfig.json",
-    "build-template/src/frontend/vite.config.js",
-    "build-template/tsconfig.json",
-    "caffeine.lock.json",
     "feature_evidence.json",
     "frontend-file-summaries.txt",
     "frontend-implementation-plan.json",
-    "frontend/index.css",
     "frontend/index.html",
-    "frontend/public/assets/generated/cardiac-sentinel-logo.dim_512x512.png",
-    "frontend/public/assets/generated/ui-icons-set.dim_512x512.png",
-    "frontend/public/assets/generated/watch-illustration.dim_1200x800.png",
-    "frontend/src/App.tsx",
-    "frontend/src/backend.d.ts",
-    "frontend/src/backend.ts",
-    "frontend/src/components/Auth/AccessDeniedScreen.tsx",
-    "frontend/src/components/Auth/LoginButton.tsx",
+    "frontend/public/assets/generated/frontend/public/assets/generated/app-icon-maskable.dim_512x512.png",
+    "frontend/public/assets/generated/frontend/public/assets/generated/app-icon.dim_192x192.png",
+    "frontend/public/assets/generated/frontend/public/assets/generated/app-icon.dim_512x512.png",
+    "frontend/public/assets/generated/frontend/public/assets/generated/apple-touch-icon.dim_180x180.png",
+    "frontend/public/manifest.webmanifest",
+    "frontend/src/components/ControlRoom/AlertHistoryTable.tsx",
     "frontend/src/components/ControlRoom/AlertStatusActions.tsx",
     "frontend/src/components/ControlRoom/AlertsQueueTable.tsx",
-    "frontend/src/components/ControlRoom/ControlRoomUserManagementCard.tsx",
     "frontend/src/components/Layout/AppHeader.tsx",
     "frontend/src/components/Layout/AppShell.tsx",
-    "frontend/src/components/Patient/MonitoringStatusCard.tsx",
-    "frontend/src/components/Patient/ReadingsList.tsx",
-    "frontend/src/components/Patient/SimulationControlsCard.tsx",
-    "frontend/src/components/Patient/SosButton.tsx",
-    "frontend/src/components/Profile/ProfileEditorCard.tsx",
-    "frontend/src/components/Profile/ProfileSetupModal.tsx",
-    "frontend/src/config.ts",
-    "frontend/src/declarations/backend.did.d.ts",
-    "frontend/src/declarations/backend.did.js",
-    "frontend/src/hooks/useAccessControl.ts",
-    "frontend/src/hooks/useActor.ts",
-    "frontend/src/hooks/useControlRoomAlerts.ts",
-    "frontend/src/hooks/useCurrentUserProfile.ts",
-    "frontend/src/hooks/useInternetIdentity.ts",
-    "frontend/src/hooks/useMonitoringSimulation.ts",
-    "frontend/src/hooks/usePatientAlerts.ts",
-    "frontend/src/hooks/usePatientReadings.ts",
+    "frontend/src/components/Layout/MobileBottomNav.tsx",
+    "frontend/src/components/PWA/InstallHelpDialog.tsx",
+    "frontend/src/components/Patient/AlertHistoryCard.tsx",
     "frontend/src/index.css",
-    "frontend/src/main.tsx",
     "frontend/src/pages/ControlRoomAlertDetailPage.tsx",
     "frontend/src/pages/ControlRoomDashboardPage.tsx",
     "frontend/src/pages/LandingPage.tsx",
     "frontend/src/pages/PatientDashboardPage.tsx",
-    "frontend/src/ui-summary.json",
-    "frontend/src/utils/StorageClient.ts",
-    "frontend/src/utils/urlParams.ts",
-    "frontend/tailwind.config.js",
     "project_state.json",
     "scratch/component-selection.json",
     "spec.md",

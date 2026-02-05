@@ -2,10 +2,15 @@
   "kind": "feature_evidence_report",
   "features": [
     {
-      "featureId": "feature-create-a-cardiac-sentinel-companion-web-app-with-two-primary-experiences-1-a-patient-experience-to-view-heart-monitoring-status-and-trigger-sos-and-2-a-medical-control-room-experience-to-receive-and-manage-emergency-alerts",
-      "featureTitle": "Create a Cardiac Sentinel companion web app with two primary experiences: (1) a patient experience to view heart monitoring status and trigger SOS, and (2) a medical control room experience to receive and manage emergency alerts.",
+      "featureId": "feature-convert-the-existing-cardiac-sentinel-web-ui-into-a-mobile-first-app-like-experience-ensure-all-primary-screens-landing-patient-dashboard-control-room-dashboard-alert-detail-are-fully-responsive-on-common-phone-widths-use-touch-friendly-spacing-sizing-and-avoid-desktop-only-layout-assumptions-e-g-multi-column-sections-collapsing-cleanly-to-single-column",
+      "featureTitle": "Convert the existing Cardiac Sentinel web UI into a mobile-first, app-like experience: ensure all primary screens (Landing, Patient Dashboard, Control Room Dashboard, Alert Detail) are fully responsive on common phone widths, use touch-friendly spacing/sizing, and avoid desktop-only layout assumptions (e.g., multi-column sections collapsing cleanly to single column).",
       "files": [
-        "frontend/src/App.tsx",
+        "frontend/src/components/ControlRoom/AlertHistoryTable.tsx",
+        "frontend/src/components/ControlRoom/AlertStatusActions.tsx",
+        "frontend/src/components/ControlRoom/AlertsQueueTable.tsx",
+        "frontend/src/components/Patient/AlertHistoryCard.tsx",
+        "frontend/src/index.css",
+        "frontend/src/pages/ControlRoomAlertDetailPage.tsx",
         "frontend/src/pages/ControlRoomDashboardPage.tsx",
         "frontend/src/pages/LandingPage.tsx",
         "frontend/src/pages/PatientDashboardPage.tsx"
@@ -24,14 +29,11 @@
       "confidence": "high"
     },
     {
-      "featureId": "feature-implement-internet-identity-sign-in-and-associate-an-authenticated-principal-with-a-user-profile-that-can-be-created-updated-in-the-app-name-age-known-condition-notes-emergency-contacts-home-address-free-text-location",
-      "featureTitle": "Implement Internet Identity sign-in and associate an authenticated principal with a user profile that can be created/updated in the app (name, age, known condition notes, emergency contacts, home address/free-text location).",
+      "featureId": "feature-add-an-installable-pwa-setup-for-cardiac-sentinel-so-it-can-be-added-to-a-phone-home-screen-and-launched-like-an-app-include-a-web-app-manifest-correct-app-icons-and-required-metadata-in-the-html-head-name-short-name-theme-color-display-mode-start-url",
+      "featureTitle": "Add an installable PWA setup for Cardiac Sentinel so it can be added to a phone home screen and launched like an app: include a web app manifest, correct app icons, and required metadata in the HTML head (name, short name, theme color, display mode, start URL).",
       "files": [
-        "frontend/src/App.tsx",
-        "frontend/src/components/Auth/LoginButton.tsx",
-        "frontend/src/components/Profile/ProfileEditorCard.tsx",
-        "frontend/src/components/Profile/ProfileSetupModal.tsx",
-        "frontend/src/hooks/useCurrentUserProfile.ts"
+        "frontend/index.html",
+        "frontend/public/manifest.webmanifest"
       ],
       "components": [
         "authorization@4.0.0",
@@ -47,126 +49,32 @@
       "confidence": "high"
     },
     {
-      "featureId": "feature-patient-dashboard-show-current-monitoring-status-recent-readings-list-and-a-manual-sos-button-that-creates-a-new-emergency-alert-immediately",
-      "featureTitle": "Patient dashboard: show current monitoring status, recent readings list, and a manual SOS button that creates a new emergency alert immediately.",
-      "files": [
-        "frontend/src/components/Patient/MonitoringStatusCard.tsx",
-        "frontend/src/components/Patient/ReadingsList.tsx",
-        "frontend/src/components/Patient/SosButton.tsx",
-        "frontend/src/hooks/usePatientAlerts.ts",
-        "frontend/src/hooks/usePatientReadings.ts",
-        "frontend/src/pages/PatientDashboardPage.tsx"
-      ],
-      "components": [
-        "authorization@4.0.0",
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0"
-      ],
-      "testIds": [
-        "REQ-4"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-simulate-watch-sensor-monitoring-in-the-web-app-provide-a-ui-control-to-generate-periodic-heart-rate-readings-and-automatically-create-an-emergency-alert-when-readings-cross-a-configurable-abnormal-threshold",
-      "featureTitle": "Simulate watch sensor monitoring in the web app: provide a UI control to generate periodic heart-rate readings and automatically create an emergency alert when readings cross a configurable abnormal threshold.",
-      "files": [
-        "frontend/src/components/Patient/SimulationControlsCard.tsx",
-        "frontend/src/hooks/useMonitoringSimulation.ts",
-        "frontend/src/pages/PatientDashboardPage.tsx"
-      ],
-      "components": [
-        "authorization@4.0.0",
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0"
-      ],
-      "testIds": [
-        "REQ-5"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-medical-control-room-dashboard-display-a-real-time-refreshed-polling-queue-of-incoming-alerts-allow-viewing-alert-details-patient-profile-summary-reading-context-and-allow-updating-alert-status-new-acknowledged-dispatched-resolved",
-      "featureTitle": "Medical control room dashboard: display a real-time refreshed (polling) queue of incoming alerts, allow viewing alert details (patient profile summary + reading context), and allow updating alert status (New, Acknowledged, Dispatched, Resolved).",
-      "files": [
-        "frontend/src/App.tsx",
-        "frontend/src/components/ControlRoom/AlertStatusActions.tsx",
-        "frontend/src/components/ControlRoom/AlertsQueueTable.tsx",
-        "frontend/src/hooks/useControlRoomAlerts.ts",
-        "frontend/src/pages/ControlRoomAlertDetailPage.tsx",
-        "frontend/src/pages/ControlRoomDashboardPage.tsx"
-      ],
-      "components": [
-        "authorization@4.0.0",
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0"
-      ],
-      "testIds": [
-        "REQ-6"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-add-a-lightweight-access-control-mechanism-for-the-medical-control-room-section-e-g-an-allowlist-of-principals-stored-in-the-backend-so-only-authorized-users-can-access-the-control-room-apis-and-ui",
-      "featureTitle": "Add a lightweight access control mechanism for the Medical Control Room section (e.g., an allowlist of principals stored in the backend) so only authorized users can access the control room APIs and UI.",
-      "files": [
-        "frontend/src/App.tsx",
-        "frontend/src/components/Auth/AccessDeniedScreen.tsx",
-        "frontend/src/components/ControlRoom/ControlRoomUserManagementCard.tsx",
-        "frontend/src/hooks/useAccessControl.ts",
-        "frontend/src/pages/ControlRoomAlertDetailPage.tsx",
-        "frontend/src/pages/ControlRoomDashboardPage.tsx"
-      ],
-      "components": [
-        "authorization@4.0.0",
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0"
-      ],
-      "testIds": [
-        "REQ-7"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-apply-a-coherent-distinctive-visual-theme-for-cardiac-sentinel-across-the-app-colors-typography-spacing-and-components-suitable-for-a-medical-safety-product-avoid-blue-purple-as-primary-brand-colors",
-      "featureTitle": "Apply a coherent, distinctive visual theme for Cardiac Sentinel across the app (colors, typography, spacing, and components) suitable for a medical safety product; avoid blue/purple as primary brand colors.",
-      "files": [
-        "frontend/src/App.tsx",
-        "frontend/src/components/Layout/AppShell.tsx",
-        "frontend/src/index.css",
-        "frontend/tailwind.config.js"
-      ],
-      "components": [
-        "authorization@4.0.0",
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0"
-      ],
-      "testIds": [
-        "REQ-8"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-add-generated-static-brand-illustration-images-and-render-them-in-the-ui-store-in-frontend-public-assets-generated",
-      "featureTitle": "Add generated static brand/illustration images and render them in the UI (store in frontend/public/assets/generated).",
+      "featureId": "feature-add-mobile-native-navigation-behavior-implement-a-bottom-navigation-pattern-on-small-screens-for-authenticated-users-patient-and-if-authorized-control-room-while-keeping-the-existing-desktop-header-navigation-for-larger-screens",
+      "featureTitle": "Add mobile-native navigation behavior: implement a bottom navigation pattern on small screens for authenticated users (Patient and, if authorized, Control Room), while keeping the existing desktop header navigation for larger screens.",
       "files": [
         "frontend/src/components/Layout/AppHeader.tsx",
         "frontend/src/components/Layout/AppShell.tsx",
+        "frontend/src/components/Layout/MobileBottomNav.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-3"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-add-an-in-app-install-help-surface-e-g-a-lightweight-card-modal-reachable-from-the-landing-page-and-or-header-that-explains-in-english-how-to-install-the-app-on-iphone-safari-and-android-chrome-using-add-to-home-screen",
+      "featureTitle": "Add an in-app “Install” help surface (e.g., a lightweight card/modal reachable from the landing page and/or header) that explains in English how to install the app on iPhone (Safari) and Android (Chrome) using “Add to Home Screen.”",
+      "files": [
+        "frontend/src/components/Layout/AppHeader.tsx",
+        "frontend/src/components/PWA/InstallHelpDialog.tsx",
         "frontend/src/pages/LandingPage.tsx"
       ],
       "components": [
@@ -178,7 +86,7 @@
         "github-export-icp-cli@1.0.0"
       ],
       "testIds": [
-        "REQ-9"
+        "REQ-4"
       ],
       "confidence": "high"
     }

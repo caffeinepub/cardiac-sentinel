@@ -71,6 +71,7 @@ export const idlService = IDL.Service({
   'assignCallerUserRole' : IDL.Func([IDL.Principal, UserRole], [], []),
   'createEmergencyAlert' : IDL.Func([AlertType, AlertSeverity], [IDL.Nat], []),
   'getAlertDetails' : IDL.Func([IDL.Nat], [EmergencyAlert], ['query']),
+  'getAllAlerts' : IDL.Func([], [IDL.Vec(EmergencyAlert)], ['query']),
   'getCallerUserProfile' : IDL.Func([], [IDL.Opt(UserProfile)], ['query']),
   'getCallerUserRole' : IDL.Func([], [UserRole], ['query']),
   'getFullProfile' : IDL.Func(
@@ -83,6 +84,7 @@ export const idlService = IDL.Service({
       [IDL.Vec(HeartRateReading)],
       ['query'],
     ),
+  'getMyAlerts' : IDL.Func([], [IDL.Vec(EmergencyAlert)], ['query']),
   'getPendingAlerts' : IDL.Func([], [IDL.Vec(EmergencyAlert)], ['query']),
   'getUserProfile' : IDL.Func(
       [IDL.Principal],
@@ -170,6 +172,7 @@ export const idlFactory = ({ IDL }) => {
         [],
       ),
     'getAlertDetails' : IDL.Func([IDL.Nat], [EmergencyAlert], ['query']),
+    'getAllAlerts' : IDL.Func([], [IDL.Vec(EmergencyAlert)], ['query']),
     'getCallerUserProfile' : IDL.Func([], [IDL.Opt(UserProfile)], ['query']),
     'getCallerUserRole' : IDL.Func([], [UserRole], ['query']),
     'getFullProfile' : IDL.Func(
@@ -182,6 +185,7 @@ export const idlFactory = ({ IDL }) => {
         [IDL.Vec(HeartRateReading)],
         ['query'],
       ),
+    'getMyAlerts' : IDL.Func([], [IDL.Vec(EmergencyAlert)], ['query']),
     'getPendingAlerts' : IDL.Func([], [IDL.Vec(EmergencyAlert)], ['query']),
     'getUserProfile' : IDL.Func(
         [IDL.Principal],

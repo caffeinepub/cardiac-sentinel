@@ -17,6 +17,19 @@ export function useGetPendingAlerts() {
   });
 }
 
+export function useGetAllAlerts() {
+  const { actor, isFetching: actorFetching } = useActor();
+
+  return useQuery<EmergencyAlert[]>({
+    queryKey: ['allAlerts'],
+    queryFn: async () => {
+      if (!actor) return [];
+      return actor.getAllAlerts();
+    },
+    enabled: !!actor && !actorFetching,
+  });
+}
+
 export function useGetAlertDetails(alertId: bigint | undefined) {
   const { actor, isFetching: actorFetching } = useActor();
 
@@ -55,6 +68,7 @@ export function useUpdateAlertStatus() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['pendingAlerts'] });
       queryClient.invalidateQueries({ queryKey: ['alertDetails'] });
+      queryClient.invalidateQueries({ queryKey: ['allAlerts'] });
     },
   });
 }
